@@ -1,0 +1,88 @@
+HW4 - INTEL Architecture 
+
+The registers in an Intel 8086 processor have these hex values:
+   1DC5 = CS register
+   0EB6 = IP register
+
+01. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+The registers in an Intel 8086 processor have these hex values:
+   5F5B = CS register
+   5B32 = IP register
+
+02. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+The registers in an Intel 8086 processor have these hex values:
+   55C6 = CS register
+   356A = IP register
+
+03. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   1B4F = DS register
+   4262 = The offset into the data segment for the variable 'X'
+
+04. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   4D58 = DS register
+   4C96 = The offset into the data segment for the variable 'X'
+
+05. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   4C70 = DS register
+   7A56 = The offset into the data segment for the variable 'X'
+
+06. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   3676E = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   0C0E = OFFSET of variable 'X'
+
+07. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   2925D = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   09BD = OFFSET of variable 'X'
+
+08. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   46B52 = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   4122 = OFFSET of variable 'X'
+
+09. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   522B0 = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   4270 = OFFSET of variable 'X'
+
+10. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+End of file
+-

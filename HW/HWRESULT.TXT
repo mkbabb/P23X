@@ -1,0 +1,13 @@
+CSC23x:  Homework Grades    (code=4-87675-1) Ver 140110
+Student:                 Babb,                 Mike 
+Created: 01/26/21 Updated:  02/07 24:01:16  
+
+HW#  Started        Status         Grade
+HW1  01/26/21       D 01/26 15:37  097               
+HW2  01/31/21       D 01/31 23:50  094               
+HW3  02/03/21       D 02/03 16:06  100               
+HW4  02/07/21       D 02/07 24:01  100               
+VER=D674241W2Z0W00H1T0G0D9:0:11 G000300V09/07004904719
+
+End of file     
+-

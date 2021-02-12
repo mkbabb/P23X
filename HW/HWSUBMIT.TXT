@@ -1,0 +1,521 @@
+CSC23x:  Homework Grades    (code=4-87675-1) Ver 140110
+Student:                 Babb,                 Mike 
+Created: 01/26/21 Updated:  02/07 24:01:16  
+
+HW#  Started        Status         Grade
+HW1  01/26/21       D 01/26 15:37  097               
+HW2  01/31/21       D 01/31 23:50  094               
+HW3  02/03/21       D 02/03 16:06  100               
+HW4  02/07/21       D 02/07 24:01  100               
+VER=D674241W2Z0W00H1T0G0D9:0:11 G000300V09/07004904719
+
+End of file     
+-
+
+
+**********   HW1.TXT   **********
+
+HW1 - Unsigned Numbers 
+
+01. Add the following two 8 bit unsigned binary numbers
+    10000100
+  + 00000000
+    --------
+
+02. Did an unsigned overflow occur? (Y/N)
+
+03. Add the following two 8 bit unsigned binary numbers
+    00100111
+  + 00001010
+    --------
+
+04. Did an unsigned overflow occur? (Y/N)
+
+05. Add the following two 8 bit unsigned binary numbers
+    11001000
+  + 00001111
+    --------
+
+06. Did an unsigned overflow occur? (Y/N)
+
+07. Subtract the following two 8 bit unsigned binary numbers
+    10101010
+  - 10110110
+    --------
+
+08. Did an unsigned overflow occur? (Y/N)
+
+09. Subtract the following two 8 bit unsigned binary numbers
+    01101010
+  - 01111001
+    --------
+
+10. Did an unsigned overflow occur? (Y/N)
+
+11. Subtract the following two 8 bit unsigned binary numbers
+    10111011
+  - 11010011
+    --------
+
+12. Did an unsigned overflow occur? (Y/N)
+
+13. Add the following 2 digit unsigned hex numbers
+    61
+  + E7
+    --
+
+14. Did an unsigned overflow occur? (Y/N)
+
+15. Add the following 2 digit unsigned hex numbers
+    B2
+  + 6C
+    --
+
+16. Did an unsigned overflow occur? (Y/N)
+
+17. Add the following 2 digit unsigned hex numbers
+    5E
+  + DB
+    --
+
+18. Did an unsigned overflow occur? (Y/N)
+
+19. Subtract the following 2 digit unsigned hex numbers
+    57
+  - 38
+    --
+
+20. Did an unsigned overflow occur? (Y/N)
+
+21. Subtract the following 2 digit unsigned hex numbers
+    0A
+  - E7
+    --
+
+22. Did an unsigned overflow occur? (Y/N)
+
+23. Subtract the following 2 digit unsigned hex numbers
+    47
+  - 6F
+    --
+
+24. Did an unsigned overflow occur? (Y/N)
+
+25. Convert the following unsigned binary number to decimal.
+    10001110
+
+26. Convert the following unsigned binary number to hex (2 digits).
+    00011101
+
+27. Convert the following unsigned hex number to decimal.
+    9A
+
+28. Convert the following unsigned decimal number to binary (8 bits).
+    220
+
+29. Convert the following unsigned decimal number to hex (2 digits).
+    89
+
+30. You are working with the following base number system:
+    4
+    What are the digits in this number system?
+    (Answer in this format: S-H) 
+    (  S is the smallest digit ) 
+    (  H is the highest  digit ) 
+    (  For example, the answer for BASE 10 is 0-9) 
+
+31. Convert the following BASE 4 number to decimal.
+    01
+
+32. You are working with the following base number system:
+    6
+    What are the digits in this number system?
+    (Answer in this format: S-H) 
+    (  S is the smallest digit ) 
+    (  H is the highest  digit ) 
+    (  For example, the answer for BASE 10 is 0-9) 
+
+33. Convert the following BASE 6 number to decimal.
+    01
+
+End of file
+-
+
+
+**********   HW1.ANS   **********
+
+ 1:10000100
+ 2:n
+ 3:00110001
+ 4:n
+ 5:11010111
+ 6:n
+ 7:00001100
+ 7:11110100
+ 8:y
+ 9:01110001
+ 9:11110001
+10:y
+11:11101000
+12:y
+13:48
+14:y
+15:11
+15:84
+16:y
+17:39
+18:y
+19:1f
+20:n
+21:23
+22:y
+23:38
+23:d8
+24:y
+25:142
+26:1d
+27:154
+28:11011100
+29:59
+30:0-3
+31:1
+32:0-5
+33:1
+End of file
+-
+
+
+**********   HW2.TXT   **********
+
+HW2 - Signed Numbers 
+
+01. Add the following 8 bit two's complement signed binary numbers
+    11100000
+  + 01111100
+    --------
+
+02. Did a two's complement signed overflow occur? (Y/N)
+
+03. Add the following 8 bit two's complement signed binary numbers
+    11101101
+  + 01000000
+    --------
+
+04. Did a two's complement signed overflow occur? (Y/N)
+
+05. Add the following 8 bit two's complement signed binary numbers
+    00000001
+  + 01111010
+    --------
+
+06. Did a two's complement signed overflow occur? (Y/N)
+
+07. Subtract the following 8 bit two's complement signed binary numbers
+    00001011
+  - 11010101
+    --------
+
+08. Did an two's complement signed overflow occur? (Y/N)
+
+09. Subtract the following 8 bit two's complement signed binary numbers
+    10110011
+  - 01011000
+    --------
+
+10. Did an two's complement signed overflow occur? (Y/N)
+
+11. Subtract the following 8 bit two's complement signed binary numbers
+    11011010
+  - 01110010
+    --------
+
+12. Did an two's complement signed overflow occur? (Y/N)
+
+13. Add the following 2 digit two's complement signed hex numbers
+    01
+  + 43
+    --
+
+14. Did a signed overflow occur? (Y/N)
+
+15. Add the following 2 digit two's complement signed hex numbers
+    DD
+  + 5C
+    --
+
+16. Did a signed overflow occur? (Y/N)
+
+17. Add the following 2 digit two's complement signed hex numbers
+    AB
+  + 48
+    --
+
+18. Did a signed overflow occur? (Y/N)
+
+19. Subtract the following 2 digit two's complement signed hex numbers
+    00
+  - 9F
+    --
+
+20. Did a signed overflow occur? (Y/N)
+
+21. Subtract the following 2 digit two's complement signed hex numbers
+    1F
+  - 74
+    --
+
+22. Did a signed overflow occur? (Y/N)
+
+23. Subtract the following 2 digit two's complement signed hex numbers
+    2A
+  - 54
+    --
+
+24. Did a signed overflow occur? (Y/N)
+
+25. Convert the following SIGNED MAGNITUDE binary number to decimal.
+    00100100
+
+26. Convert the following SIGNED ONE'S COMPLEMENT number to decimal.
+    00100100
+
+27. Convert the following SIGNED TWO'S COMPLEMENT number to decimal.
+    00100100
+
+28. Convert the following SIGNED MAGNITUDE binary number to decimal.
+    11011001
+
+29. Convert the following SIGNED ONE'S COMPLEMENT number to decimal.
+    11011001
+
+30. Convert the following SIGNED TWO'S COMPLEMENT number to decimal.
+    11011001
+
+31. Convert the following SIGNED MAGNITUDE binary number to decimal.
+    00010100
+
+32. Convert the following SIGNED ONE'S COMPLEMENT number to decimal.
+    00010100
+
+33. Convert the following SIGNED TWO'S COMPLEMENT number to decimal.
+    00010100
+
+End of file
+-
+
+
+**********   HW2.ANS   **********
+
+ 1:11011100
+ 1:01011100
+ 2:n
+ 3:00001101
+ 3:00101101
+ 4:n
+ 5:01111011
+ 6:n
+ 7:01100001
+ 7:00110110
+ 8:n
+ 9:01011011
+10:n
+11:01101000
+12:y
+13:42
+13:44
+14:n
+15:39
+16:n
+17:f3
+18:n
+19:9f
+19:a1
+20:n
+21:2b
+21:ab
+22:n
+23:d6
+24:n
+25:36
+25:+36
+26:+36
+27:+36
+28:-89
+29:+38
+29:-38
+30:-39
+31:+20
+32:+20
+33:+20
+End of file
+-
+
+
+**********   HW3.TXT   **********
+
+HW3 - Basic Computer Architecture 
+
+Questions 1-4 relate to a microprocessor with this instruction format.
+   All instructions have two operands:
+   - one is a register
+   - the other is an absolute address of a memory variable
+   This machine's memory is Byte Addressable.
+
+The binary format of an instruction looks as follows:
+
+   OOOOOOOOOLLRRRAAAAAAAAAAAAAAAAAAAAAAAA
+
+Where....
+ 9 = O = number of bits in the opcode
+ 2 = L = number of bits that indicate the size of a data variable 
+ 3 = R = number of bits that indicate which register to use 
+24 = A = number of bits that indicate the address of a byte in memory
+
+*** GIVE ALL ANSWERS IN DECIMAL ***
+01. How many unique OPCODES can this processor have.
+
+02. How many different sizes of data can this processor allow.
+
+03. How many registers does this processor have.
+
+04. How many MegaBytes of memory can this processor address.
+
+Questions 5-7 relate to a microprocessor with these characteristics.
+   200 = clock speed in MegaHertz
+     4 = the number of clock cycles required for each instruction
+
+   Note that MegaHertz represents millions of cycles per second,
+   1 Nano-second is 1 billionth of a second,
+   MIPS stands for Million Instructions Per Second.
+
+05. How many Nano-seconds does 1 clock cycle take to complete.
+
+06. How many Nano-seconds does 1 instruction take to execute.
+
+07. How many MIPS does this processor execute.
+
+End of file
+-
+
+
+**********   HW3.ANS   **********
+
+ 1:512
+ 2:4
+ 3:8
+ 4:16
+ 5:5
+ 6:50
+ 6:20
+ 7:50
+End of file
+-
+
+
+**********   HW4.TXT   **********
+
+HW4 - INTEL Architecture 
+
+The registers in an Intel 8086 processor have these hex values:
+   1DC5 = CS register
+   0EB6 = IP register
+
+01. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+The registers in an Intel 8086 processor have these hex values:
+   5F5B = CS register
+   5B32 = IP register
+
+02. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+The registers in an Intel 8086 processor have these hex values:
+   55C6 = CS register
+   356A = IP register
+
+03. What is the ABSOLUTE ADDRESS of the next instruction to be executed.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   1B4F = DS register
+   4262 = The offset into the data segment for the variable 'X'
+
+04. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   4D58 = DS register
+   4C96 = The offset into the data segment for the variable 'X'
+
+05. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following hex information about an Intel 8086 program:
+   4C70 = DS register
+   7A56 = The offset into the data segment for the variable 'X'
+
+06. What is the ABSOLUTE ADDRESS of the variable 'X'.
+    (Provide the 5 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   3676E = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   0C0E = OFFSET of variable 'X'
+
+07. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   2925D = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   09BD = OFFSET of variable 'X'
+
+08. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   46B52 = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   4122 = OFFSET of variable 'X'
+
+09. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+Given the following ABSOLUTE ADDRESS:
+   522B0 = ABSOLUTE ADDRESS
+And that variable 'X' is located at this OFFSET into the data segment
+   4270 = OFFSET of variable 'X'
+
+10. What must be the value in the DATA SEGMENT REGISTER (DS).
+    (Provide the 4 digit hex value)
+
+
+End of file
+-
+
+
+**********   HW4.ANS   **********
+
+ 1:1eb06
+ 2:650e2
+ 3:591ca
+ 4:1f752
+ 5:52216
+ 6:54156
+ 7:35b6
+ 8:288z
+ 8:288a
+ 9:42a3
+10:4e04
+End of file
+-
