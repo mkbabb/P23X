@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/01/21 04:24:38
+Microsoft (R) Macro Assembler Version 6.11		    03/01/21 15:34:15
 key.asm							     Page 1 - 1
 
 
@@ -6,35 +6,35 @@ key.asm							     Page 1 - 1
 				        .8086                         
 				        .stack     256
  0000				.code
-				
  0000				letters:
- 0000  80 E2 DF			    and dl, 0dfh
+ 0000  80 E2 DF			    and dl, 0dfh; duplication of the below bit-twiddling
  0003				print:  
- 0003  B4 02			    mov ah, 02h
+ 0003  B4 02			    mov ah, 02h ; print to stdout from dl.
  0005  CD 21			    int 21h
  0007				my_loop:
- 0007  B4 08			    mov ah, 08h ; read from stdin, no echo
- 0009  CD 21			    int 21h
+ 0007  B4 08			    mov ah, 08h ; read from stdin into al, no echo.
+ 0009  CD 21			    int 21h     ; 
 				
- 000B  8A D0			    mov dl, al
- 000D  24 DF			    and al, 0dfh
+ 000B  8A D0			    mov dl, al  ; 
+ 000D  24 DF			    and al, 0dfh; bit-twiddling caps trick.
 				    
- 000F  2C 41			    sub al, 'A'
+ 000F  2C 41			    sub al, 'A' ; in the range 'twixt [A, Z]?
  0011  3C 19			    cmp al, 25
- 0013  76 EB			    jbe letters
+ 0013  76 EB			    jbe letters ; jmp if so.
 				
- 0015  80 FA 20			    cmp dl, ' '
+ 0015  80 FA 20			    cmp dl, ' ' ; is space? jmp if so.
  0018  74 E9			    je print
- 001A  80 FA 2E			    cmp dl, '.'
+				
+ 001A  80 FA 2E			    cmp dl, '.' ; is period? don't jmp.
  001D  75 E8			    jne my_loop
  001F				exit:
- 001F  B4 02			    mov ah, 02h
+ 001F  B4 02			    mov ah, 02h; print to stoudt from dl.
  0021  CD 21			    int 21h
 				
- 0023  B8 4C00			    mov ax, 4c00h
- 0026  CD 21			    int 21h
-				    end my_loop
-Microsoft (R) Macro Assembler Version 6.11		    03/01/21 04:24:38
+ 0023  B4 4C			    mov ah, 4ch; cleanup and exit thereon.
+ 0025  CD 21			    int 21h
+				    end my_loop; end program; entry point.
+Microsoft (R) Macro Assembler Version 6.11		    03/01/21 15:34:15
 key.asm							     Symbols 2 - 1
 
 
@@ -47,7 +47,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0028	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0027	  Word	  Public  'CODE'	
 
 
 Symbols:
