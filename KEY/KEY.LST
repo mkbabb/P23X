@@ -1,47 +1,41 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/01/21 00:40:54
+Microsoft (R) Macro Assembler Version 6.11		    03/01/21 03:24:37
 key.asm							     Page 1 - 1
 
 
 				        .model     small
 				        .8086                         
 				        .stack     256
- 0000				.data
-				
  0000				.code
-				
  0000				caps:
  0000  80 EA 20			    sub dl, 32
  0003				print:
  0003  B4 02			    mov ah, 02h
  0005  CD 21			    int 21h
+ 0007  74 1C			    je exit
+ 0009				my_loop:
+ 0009  B4 08			    mov ah, 08h ; read from stdin, no echo
+ 000B  CD 21			    int 21h
 				
- 0007  80 FA 2E			    cmp dl, '.'
- 000A  74 1C			    je exit
- 000C				my_loop:
- 000C  B4 07			    mov ah, 07h ; read from stdin, no echo                ;set the dos code to write a string
- 000E  CD 21			    int 21h
+ 000D  8A D0			    mov dl, al
 				
- 0010  8A D0			    mov dl, al
+ 000F  2C 41			    sub al, 'A'
+ 0011  3C 19			    cmp al, 25
+ 0013  76 EE			    jbe print
 				
- 0012  2C 41			    sub al, 'A'
- 0014  3C 19			    cmp al, 25
- 0016  76 EB			    jbe print
+ 0015  2C 20			    sub al, 32
+ 0017  3C 19			    cmp al, 25
+ 0019  76 E5			    jbe caps
 				
- 0018  2C 20			    sub al, 32
- 001A  3C 19			    cmp al, 25
- 001C  76 E2			    jbe caps
-				
- 001E  80 FA 20			    cmp dl, ' '
- 0021  80 FA 2E			    cmp dl, '.'
- 0024  74 DD			    je print
-				
- 0026  EB E4			    jmp my_loop
-				        
- 0028				exit:
- 0028  B8 4C00			    mov ax, 4c00h
- 002B  CD 21			    int 21h
+ 001B  80 FA 20			    cmp dl, ' '
+ 001E  74 E3			    je print
+ 0020  80 FA 2E			    cmp dl, '.'
+				    
+ 0023  EB DE			    jmp print
+ 0025				exit:
+ 0025  B8 4C00			    mov ax, 4c00h
+ 0028  CD 21			    int 21h
 				    end my_loop
-Microsoft (R) Macro Assembler Version 6.11		    03/01/21 00:40:54
+Microsoft (R) Macro Assembler Version 6.11		    03/01/21 03:24:37
 key.asm							     Symbols 2 - 1
 
 
@@ -54,7 +48,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 002D	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 002A	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -71,8 +65,8 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 caps . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
-exit . . . . . . . . . . . . . .	L Near	 0028	  _TEXT	
-my_loop  . . . . . . . . . . . .	L Near	 000C	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 0025	  _TEXT	
+my_loop  . . . . . . . . . . . .	L Near	 0009	  _TEXT	
 print  . . . . . . . . . . . . .	L Near	 0003	  _TEXT	
 
 	   0 Warnings

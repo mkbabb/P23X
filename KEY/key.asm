@@ -1,10 +1,7 @@
         .model     small
         .8086                         
         .stack     256
-.data
-
 .code
-
 caps:
     sub dl, 32
 print:
@@ -27,10 +24,10 @@ my_loop:
     cmp dl, ' '
     je print
     cmp dl, '.'
-    je print
-    
-    jmp my_loop
+    jne my_loop
 exit:
+    mov ah, 02h
+    int 21h
     mov ax, 4c00h
     int 21h
     end my_loop
