@@ -2,9 +2,10 @@
         .8086                         
         .stack     256
 .code
-caps:
-    sub dl, 32
-print:
+
+letters:
+    and dl, 0dfh
+print:  
     mov ah, 02h
     int 21h
 my_loop:
@@ -12,14 +13,11 @@ my_loop:
     int 21h
 
     mov dl, al
-
+    and al, 0dfh
+    
     sub al, 'A'
     cmp al, 25
-    jbe print
-
-    sub al, 32
-    cmp al, 25
-    jbe caps
+    jbe letters
 
     cmp dl, ' '
     je print
@@ -28,6 +26,7 @@ my_loop:
 exit:
     mov ah, 02h
     int 21h
+
     mov ax, 4c00h
     int 21h
     end my_loop
