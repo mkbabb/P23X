@@ -1,0 +1,55 @@
+Microsoft (R) Macro Assembler Version 6.11		    03/05/21 23:40:13
+tabs.asm						     Page 1 - 1
+
+
+				        .model     small
+				        .8086          
+				        .stack     256 
+ 0000				.code
+				; imul:
+				; imul_next:
+				;     add al, al
+				;     loop .imul_next
+				;     ret
+				
+ 0000				main:
+ 0000  B0 05			    mov al, 5
+ 0002  B9 000A			    mov cx, 10
+ 0005  F6 E8			    imul al
+				    
+ 0007  B4 4C			    mov ah, 4ch                 
+ 0009  CD 21			    int 21h                     
+				    end main  
+Microsoft (R) Macro Assembler Version 6.11		    03/05/21 23:40:13
+tabs.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
+_TEXT  . . . . . . . . . . . . .	16 Bit	 000B	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+main . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+
+	   0 Warnings
+	   0 Errors
