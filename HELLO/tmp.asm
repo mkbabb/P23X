@@ -1,18 +1,22 @@
-section .data
-msg      db        'Hello World'       ;the hello world message
-eol      db        13,10               ;cr/lf = \n in c++
-term     db        '$'
-msglen   dw        term-msg+1  
+         .model     small              ;64k code and 64k data
+         .8086                         ;only allow 8086 instructions
+         .stack     256   
 
+.data
 
-section .text
-main:
-    mov edx, msglen
-    mov ecx, msg
-    mov ebx, 1
-    mov eax, 4
-    int 0x80
+.code
+jmper:
+    mov ax, 0ffffh
+tmp:
+    mov ax, 290Eh
+    mov bx, 5DE8h
+    mov cx, 9704h
+    mov dx, 0DA59h
 
-    mov ebx, 0
-    mov eax, 1
-    int 0x80
+    mul cl
+
+    jc jmper
+
+    mov       ax,4c00h            ;set dos code to terminate program
+    int       21h  
+    end       tmp   

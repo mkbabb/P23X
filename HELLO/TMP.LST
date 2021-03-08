@@ -1,0 +1,60 @@
+Microsoft (R) Macro Assembler Version 6.11		    03/08/21 15:23:40
+tmp.asm							     Page 1 - 1
+
+
+				         .model     small              ;64k code and 64k data
+				         .8086                         ;only allow 8086 instructions
+				         .stack     256   
+				
+ 0000				.data
+				
+ 0000				.code
+ 0000				jmper:
+ 0000  B8 FFFF			    mov ax, 0ffffh
+ 0003				tmp:
+ 0003  B8 290E			    mov ax, 290Eh
+ 0006  BB 5DE8			    mov bx, 5DE8h
+ 0009  B9 9704			    mov cx, 9704h
+ 000C  BA DA59			    mov dx, 0DA59h
+				
+ 000F  F6 E1			    mul cl
+				
+ 0011  72 ED			    jc jmper
+				
+ 0013  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
+ 0016  CD 21			    int       21h  
+				    end       tmp   
+Microsoft (R) Macro Assembler Version 6.11		    03/08/21 15:23:40
+tmp.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0018	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+jmper  . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+tmp  . . . . . . . . . . . . . .	L Near	 0003	  _TEXT	
+
+	   0 Warnings
+	   0 Errors
