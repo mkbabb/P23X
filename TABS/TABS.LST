@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/09/21 24:16:35
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 00:40:40
 tabs.asm						     Page 1 - 1
 
 
@@ -25,40 +25,44 @@ tabs.asm						     Page 1 - 1
  0018				main_loop:
  0018  B4 08			    mov ah, 08h                 ; read from stdin into al, no echo.
  001A  CD 21			    int 21h                     ; int'rupt.
+ 001C  8A D0			    mov dl, al
 				
- 001C  3C 24			    cmp al, '$'
- 001E  74 21			    je done
+ 001E  3C 24			    cmp al, '$'
+ 0020  74 23			    je done
+ 0022  3C 1A			    cmp al, 1ah
+ 0024  74 1F			    je done
 				
- 0020  3C 09			    cmp al, 9
- 0022  74 13			    je print_space
+ 0026  3C 09			    cmp al, 09h
+ 0028  74 11			    je print_space
 				
- 0024  8A D0			    mov dl, al
- 0026  B4 02			    mov ah, 02h                 ; print to stdout from dl.
- 0028  CD 21			    int 21h                     ; int'rupt.
+ 002A  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 002C  CD 21			    int 21h                     ; int'rupt.
 				
- 002A  3C 0A			    cmp al, 10
- 002C  74 E6			    je main_body
- 002E  3C 0D			    cmp al, 13
+ 002E  3C 0D			    cmp al, 0dh
  0030  74 E2			    je main_body
+ 0032  3C 0A			    cmp al, 0ah
+ 0034  74 DE			    je main_body
 				
- 0032  49			    dec cx
- 0033  E3 DF			    jcxz main_body
- 0035  EB E1			    jmp main_loop
+ 0036  49			    dec cx
+ 0037  E3 DB			    jcxz main_body
+ 0039  EB DD			    jmp main_loop
 				
- 0037				print_space:
- 0037  B2 20			    mov dl, ' '
- 0039  B4 02			    mov ah, 02h                 ; print to stdout from dl.
- 003B  CD 21			    int 21h                     ; int'rupt.
- 003D  E2 F8			    loop print_space
+ 003B				print_space:
+ 003B  B2 20			    mov dl, ' '
+ 003D  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 003F  CD 21			    int 21h                     ; int'rupt.
+ 0041  E2 F8			    loop print_space
 				
- 003F  EB D3			    jmp main_body
+ 0043  EB CF			    jmp main_body
 				
- 0041				done:
- 0041  B4 4C			    mov ah, 4ch                 
- 0043  CD 21			    int 21h  
+ 0045				done:
+ 0045  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 0047  CD 21			    int 21h                     ; int'rupt.
+ 0049  B4 4C			    mov ah, 4ch                 
+ 004B  CD 21			    int 21h  
 				
 				    end get_tab_count  
-Microsoft (R) Macro Assembler Version 6.11		    03/09/21 24:16:35
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 00:40:40
 tabs.asm						     Symbols 2 - 1
 
 
@@ -71,7 +75,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0045	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 004D	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -88,11 +92,11 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 default  . . . . . . . . . . . .	L Near	 0000	  _TEXT	
-done . . . . . . . . . . . . . .	L Near	 0041	  _TEXT	
+done . . . . . . . . . . . . . .	L Near	 0045	  _TEXT	
 get_tab_count  . . . . . . . . .	L Near	 0004	  _TEXT	
 main_body  . . . . . . . . . . .	L Near	 0014	  _TEXT	
 main_loop  . . . . . . . . . . .	L Near	 0018	  _TEXT	
-print_space  . . . . . . . . . .	L Near	 0037	  _TEXT	
+print_space  . . . . . . . . . .	L Near	 003B	  _TEXT	
 
 	   0 Warnings
 	   0 Errors

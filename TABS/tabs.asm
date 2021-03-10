@@ -21,20 +21,22 @@ main_body:
 main_loop:
     mov ah, 08h                 ; read from stdin into al, no echo.
     int 21h                     ; int'rupt.
+    mov dl, al
 
     cmp al, '$'
     je done
+    cmp al, 1ah
+    je done
 
-    cmp al, 9
+    cmp al, 09h
     je print_space
 
-    mov dl, al
     mov ah, 02h                 ; print to stdout from dl.
     int 21h                     ; int'rupt.
 
-    cmp al, 10
+    cmp al, 0dh
     je main_body
-    cmp al, 13
+    cmp al, 0ah
     je main_body
 
     dec cx
@@ -50,6 +52,8 @@ print_space:
     jmp main_body
 
 done:
+    mov ah, 02h                 ; print to stdout from dl.
+    int 21h                     ; int'rupt.
     mov ah, 4ch                 
     int 21h  
 
