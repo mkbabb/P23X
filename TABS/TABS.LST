@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/10/21 03:03:16
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 03:08:19
 tabs.asm						     Page 1 - 1
 
 
@@ -40,15 +40,12 @@ tabs.asm						     Page 1 - 1
  002E  E0 E4			    loopnz main_loop
  0030  EB D6			    jmp main_body
 				
-				    ; dec cx
-				    ; jcxz main_body
-				    ; jmp main_loop
  0032				done:
  0032  B4 4C			    mov ah, 4ch                 
  0034  CD 21			    int 21h  
 				
 				    end main_body  
-Microsoft (R) Macro Assembler Version 6.11		    03/10/21 03:03:16
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 03:08:19
 tabs.asm						     Symbols 2 - 1
 
 
