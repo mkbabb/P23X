@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/05/21 23:40:13
+Microsoft (R) Macro Assembler Version 6.11		    03/09/21 24:16:35
 tabs.asm						     Page 1 - 1
 
 
@@ -6,21 +6,59 @@ tabs.asm						     Page 1 - 1
 				        .8086          
 				        .stack     256 
  0000				.code
-				; imul:
-				; imul_next:
-				;     add al, al
-				;     loop .imul_next
-				;     ret
+				   
+ 0000				default:
+ 0000  B3 0A			    mov bl, 10
+ 0002  EB 10			    jmp main_body
 				
- 0000				main:
- 0000  B0 05			    mov al, 5
- 0002  B9 000A			    mov cx, 10
- 0005  F6 E8			    imul al
-				    
- 0007  B4 4C			    mov ah, 4ch                 
- 0009  CD 21			    int 21h                     
-				    end main  
-Microsoft (R) Macro Assembler Version 6.11		    03/05/21 23:40:13
+ 0004				get_tab_count:
+ 0004  26: 80 3E 0080 00	    cmp byte ptr es:[80h],0
+ 000A  74 F4			    je default
+				
+ 000C  26: 8A 1E 0082		    mov bl, byte ptr es:[82h]
+ 0011  80 EB 30			    sub bl, '0'
+				   
+ 0014				main_body:
+ 0014  33 C9			    xor cx, cx
+ 0016  8A CB			    mov cl, bl
+				
+ 0018				main_loop:
+ 0018  B4 08			    mov ah, 08h                 ; read from stdin into al, no echo.
+ 001A  CD 21			    int 21h                     ; int'rupt.
+				
+ 001C  3C 24			    cmp al, '$'
+ 001E  74 21			    je done
+				
+ 0020  3C 09			    cmp al, 9
+ 0022  74 13			    je print_space
+				
+ 0024  8A D0			    mov dl, al
+ 0026  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 0028  CD 21			    int 21h                     ; int'rupt.
+				
+ 002A  3C 0A			    cmp al, 10
+ 002C  74 E6			    je main_body
+ 002E  3C 0D			    cmp al, 13
+ 0030  74 E2			    je main_body
+				
+ 0032  49			    dec cx
+ 0033  E3 DF			    jcxz main_body
+ 0035  EB E1			    jmp main_loop
+				
+ 0037				print_space:
+ 0037  B2 20			    mov dl, ' '
+ 0039  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 003B  CD 21			    int 21h                     ; int'rupt.
+ 003D  E2 F8			    loop print_space
+				
+ 003F  EB D3			    jmp main_body
+				
+ 0041				done:
+ 0041  B4 4C			    mov ah, 4ch                 
+ 0043  CD 21			    int 21h  
+				
+				    end get_tab_count  
+Microsoft (R) Macro Assembler Version 6.11		    03/09/21 24:16:35
 tabs.asm						     Symbols 2 - 1
 
 
@@ -33,7 +71,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 000B	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0045	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -49,7 +87,12 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
-main . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+default  . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+done . . . . . . . . . . . . . .	L Near	 0041	  _TEXT	
+get_tab_count  . . . . . . . . .	L Near	 0004	  _TEXT	
+main_body  . . . . . . . . . . .	L Near	 0014	  _TEXT	
+main_loop  . . . . . . . . . . .	L Near	 0018	  _TEXT	
+print_space  . . . . . . . . . .	L Near	 0037	  _TEXT	
 
 	   0 Warnings
 	   0 Errors

@@ -2,22 +2,55 @@
         .8086          
         .stack     256 
 .code
-string_to_int:
-    xor bx, bx
-loop_string_to_int:
+   
+default:
+    mov bl, 10
+    jmp main_body
 
-
-
-main:
+get_tab_count:
     cmp byte ptr es:[80h],0
-    je noclp
-    mov al, byte ptr es:[82h]
+    je default
 
-    
-    mov al, 5
-    mov cx, 10
-    imul al
-    
+    mov bl, byte ptr es:[82h]
+    sub bl, '0'
+   
+main_body:
+    xor cx, cx
+    mov cl, bl
+
+main_loop:
+    mov ah, 08h                 ; read from stdin into al, no echo.
+    int 21h                     ; int'rupt.
+
+    cmp al, '$'
+    je done
+
+    cmp al, 9
+    je print_space
+
+    mov dl, al
+    mov ah, 02h                 ; print to stdout from dl.
+    int 21h                     ; int'rupt.
+
+    cmp al, 10
+    je main_body
+    cmp al, 13
+    je main_body
+
+    dec cx
+    jcxz main_body
+    jmp main_loop
+
+print_space:
+    mov dl, ' '
+    mov ah, 02h                 ; print to stdout from dl.
+    int 21h                     ; int'rupt.
+    loop print_space
+
+    jmp main_body
+
+done:
     mov ah, 4ch                 
-    int 21h                     
-    end main  
+    int 21h  
+
+    end get_tab_count  
