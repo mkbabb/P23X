@@ -3,16 +3,18 @@
         .stack     256 
 .code
    
-
 print_space:
     mov dl, ' '
 print_space_loop:
     mov ah, 02h                 ; print to stdout from dl.
     int 21h                     ; int'rupt.
-    loop print_space_loop
+    loopz print_space_loop
 main_body:
     mov cl, byte ptr es:[82h]
     sub cl, '0'
+    jnc main_loop
+    
+    mov cl, 10
 main_loop:
     mov ah, 08h                 ; read from stdin into al, no echo.
     int 21h                     ; int'rupt.
@@ -28,15 +30,15 @@ main_loop:
     je main_body
     cmp al, 0ah
     je main_body
-    
     cmp al, 1ah
     je done
 
-    dec cx
-    jcxz main_body
-    jmp main_loop
+    loopnz main_loop
+    jmp main_body
 
-
+    ; dec cx
+    ; jcxz main_body
+    ; jmp main_loop
 done:
     mov ah, 4ch                 
     int 21h  
