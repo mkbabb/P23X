@@ -1,50 +1,86 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/10/21 14:52:14
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 16:25:40
 tabs.asm						     Page 1 - 1
 
 
-				        .model     small
-				        .8086          
-				        .stack     256 
+				;----------------------------------------------
+				;   Program: tabs.asm (MASM variant whereof)
+				;   
+				;   Functionzione:
+				;                Takes a stream of characters 
+				;                and outputs every tab therein,
+				;                expanded as a space'd char,
+				;                whereof's count is bound by race.  
+				;                
+				;                
+				;   Owner: DvP
+				;
+				;   Date: Marz. 9th, 2021
+				;   Changes: null
+				;----------------------------------------------
+				        .model     small; 64k code and 64k data.
+				        .8086           ; dialect.            
+				        .stack     256  ; stack sz.
  0000				.code
-				   
+				;----------------------------------------------
+				; main print space body,
+				; whereof expands the tab,
+				; by amount equal to,
+				; tab_amount - counter.
+				;----------------------------------------------
  0000				print_space:
- 0000  B2 20			    mov dl, ' '
+ 0000  B2 20			    mov dl, ' '                 ; moves char ' ' into dl.
+				;----------------------------------------------
  0002				print_space_loop:
- 0002  CD 21			    int 21h                     ; int'rupt.
- 0004  E1 FC			    loopz print_space_loop
+ 0002  CD 21			    int 21h                     ; int'rupt 2 print.
+ 0004  E1 FC			    loopz print_space_loop      ; loop whilst cx != 0
+				
+				;----------------------------------------------
+				; main function body;
+				; reads in the chars,
+				; transforms if behooveful,
+				; and prints thereon.
+				;----------------------------------------------
  0006				main_body:
- 0006  26: 8A 0E 0082		    mov cl, byte ptr es:[82h]
- 000B  80 E9 30			    sub cl, '0'
- 000E  73 02			    jnc main_loop
-				    
- 0010  B1 0A			    mov cl, 10
+ 0006  26: 8A 0E 0082		    mov cl, byte ptr es:[82h]   ; reads a command line arg in.
+ 000B  80 E9 30			    sub cl, '0'                 ; converts to an int.
+ 000E  73 02			    jnc main_loop               ; if the command line arg was 0,
+				                                ; default to 10;
+ 0010  B1 0A			    mov cl, 10                  ; defs.
+				;----------------------------------------------
  0012				main_loop:
  0012  B4 08			    mov ah, 08h                 ; read from stdin into al, no echo.
- 0014  CD 21			    int 21h                     ; int'rupt.
- 0016  8A D0			    mov dl, al
+ 0014  CD 21			    int 21h                     ; int'rupt thereof.
+ 0016  8A D0			    mov dl, al                  ; copies al to dl.
 				
- 0018  B4 02			    mov ah, 02h                 ; print to stdout from dl.
+ 0018  B4 02			    mov ah, 02h                 ; code 2 print; will be int'rupt'd later.
 				
- 001A  3C 09			    cmp al, 09h
- 001C  74 E2			    je print_space
+ 001A  3C 09			    cmp al, 09h                 ; a \t? jmp to print the consonant
+ 001C  74 E2			    je print_space              ; space count.
 				
- 001E  CD 21			    int 21h                     ; int'rupt.
+ 001E  CD 21			    int 21h                     ; int'rupt 2 print.
 				
- 0020  3C 0D			    cmp al, 0dh
- 0022  74 E2			    je main_body
- 0024  3C 0A			    cmp al, 0ah
- 0026  74 DE			    je main_body
- 0028  3C 1A			    cmp al, 1ah
- 002A  74 04			    je done
+ 0020  3C 0D			    cmp al, 0dh                 ; a \n? jmp to reset tab counter.
+ 0022  74 E2			    je main_body                ; jmping.
+ 0024  3C 0A			    cmp al, 0ah                 ; a \r? jmp to reset tab counter.
+ 0026  74 DE			    je main_body                ; jmping.
+ 0028  3C 1A			    cmp al, 1ah                 ; a EOF? jmp to done.
+ 002A  74 04			    je done                     ; jmping.
 				
- 002C  E0 E4			    loopnz main_loop
- 002E  EB D6			    jmp main_body
+ 002C  E0 E4			    loopnz main_loop            ; loop with the cx variable as counter.
+ 002E  EB D6			    jmp main_body               ; if cx has gone < 0, reset the counter.
+				
+				;----------------------------------------------
+				; the final executor,
+				; foreswear no hope,
+				; ye who enter here;
+				; we've made it!
+				;----------------------------------------------
  0030				done:
- 0030  B4 4C			    mov ah, 4ch                 
- 0032  CD 21			    int 21h  
-				
-				    end main_body  
-Microsoft (R) Macro Assembler Version 6.11		    03/10/21 14:52:14
+ 0030  B4 4C			    mov ah, 4ch                 ; opcode to exit gracefully.      
+ 0032  CD 21			    int 21h                     ; the executor of the above,
+				                                ; a beatitude, grace hereof.
+				    end main_body               ;
+Microsoft (R) Macro Assembler Version 6.11		    03/10/21 16:25:40
 tabs.asm						     Symbols 2 - 1
 
 

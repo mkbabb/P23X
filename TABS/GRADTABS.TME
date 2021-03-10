@@ -1,55 +1,12 @@
 Grading and testing history log
-       User Test.    Date: 03/10/21  02:44:16  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:44:23  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:37  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:39  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:41  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:42  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:44  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:46  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:48  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:49  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:45:51  CANTO_5.TXT  testout      
-   *** Grading Run.  Date: 03/10/21  02:47:15 
-       User Test.    Date: 03/10/21  02:57:04  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:57:06  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:57:11  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:57:12  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:57:14  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  02:57:15  CANTO_5.TXT  testout      
-   *** Grading Run.  Date: 03/10/21  03:07:48 
-       User Test.    Date: 03/10/21  03:09:03  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:05  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:06  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:07  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:08  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:09  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:11  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:12  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:13  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:16  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:18  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  03:09:19  CANTO_5.TXT  testout      
-   *** Grading Run.  Date: 03/10/21  03:09:23 
-       User Test.    Date: 03/10/21  14:52:28  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:31  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:32  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:34  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:35  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:36  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:37  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:39  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:41  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  14:52:43  CANTO_5.TXT  testout      
-   *** Grading Run.  Date: 03/10/21  14:52:48 
-       User Test.    Date: 03/10/21  16:19:52  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:54  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:55  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:56  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:57  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:58  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:19:59  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:20:01  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:20:03  CANTO_5.TXT  testout      
-       User Test.    Date: 03/10/21  16:20:05  CANTO_5.TXT  testout      
-   *** Grading Run.  Date: 03/10/21  16:21:17 
+       User Test.    Date: 03/10/21  16:25:49  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:52  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:53  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:54  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:55  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:57  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:25:59  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:26:01  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:26:03  CANTO_5.TXT  testout      
+       User Test.    Date: 03/10/21  16:26:05  CANTO_5.TXT  testout      
+   *** Grading Run.  Date: 03/10/21  16:26:14 
