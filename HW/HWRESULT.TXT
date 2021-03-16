@@ -1,13 +1,13 @@
-CSC23x:  Homework Grades    (code=6-68876-5) Ver 580110
+CSC23x:  Homework Grades    (code=7-75688-5) Ver 580110
 Student:                 Babb,                 Mike 
-Created: 03/08/21 Updated:  03/08 15:49:55  
+Created: 03/08/21 Updated:  03/15 15:50:00  
 
 HW#  Started        Status         Grade
 HW5  03/08/21       D 03/08 15:49  096               
-HW6                                000               
+HW6  03/15/21       D 03/15 15:49  100               
 HW7                                000               
 HW8                                000               
-VER=J566350D1G0Y00Y0Y0W0S0:0:90 U040000V00/08000000059
+VER=C067350M1B0P10A0S0Y0K9:0:00 S051600V00/05000000609
 
 End of file     
 -
