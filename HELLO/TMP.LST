@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/15/21 02:40:26
+Microsoft (R) Macro Assembler Version 6.11		    03/17/21 01:53:22
 tmp.asm							     Page 1 - 1
 
 
@@ -6,65 +6,37 @@ tmp.asm							     Page 1 - 1
 				         .8086                         ;only allow 8086 instructions
 				         .stack     256   
  0000				.data
- 0000 AB E8 77 A6 76 1A		message0 db  0ABh, 0E8h, 077h, 0A6h, 076h, 01Ah, 05Fh, 0AEh, 058h, 0C8h, 09Eh, 059h, 063h, 0C7h, 083h, 047h
-       5F AE 58 C8 9E 59
-       63 C7 83 47
- 0010 04 E1 80 B0 E5 27		message1 db  004h, 0E1h, 080h, 0B0h, 0E5h, 027h, 030h, 056h, 011h, 088h, 098h, 0B8h, 05Ah, 0A3h, 0AEh, 089h
-       30 56 11 88 98 B8
-       5A A3 AE 89
- 0020 F8 DA 17 60 72 A8		message2 db  0F8h, 0DAh, 017h, 060h, 072h, 0A8h, 035h, 0B1h, 0C2h, 034h, 061h, 0FCh, 0B4h, 026h, 075h, 044h
-       35 B1 C2 34 61 FC
-       B4 26 75 44
- 0030 8F B9 8E C3 F7 11		message3 db  08Fh, 0B9h, 08Eh, 0C3h, 0F7h, 011h, 010h, 0DCh, 012h, 0D0h, 0EAh, 051h, 0EAh, 0E4h, 01Bh, 0B6h
-       10 DC 12 D0 EA 51
-       EA E4 1B B6
+ 0000 7FFF			p0 dw 7fffh
 				
  0000				.code
- 0000				tmp:
- 0000  BE 000E			    mov si, 000eh
- 0003  BF 000D			    mov di, 000dh
- 0006  BB 0014			    mov bx, 0014h
- 0009  BD 0082			    mov bp, 0082h
 				
- 000C  B8 ---- R		    mov ax, @data
- 000F  8E D8			    mov ds, ax
+				; subr:   push  ax                                              
+				;         push  si                                              
+				;         mov   ax,[si]                                         
+				;         mov   [si],ah                                         
+				;         mov   [si+1],al  
 				
- 0011  33 C0			    xor ax, ax
+				;         mov bx, [WORD PTR si]
 				
- 0013  8A 87 0000 R		    mov al,[message0 + bx] 
+				;         pop   si                                              
+				;         pop   ax                                              
+				;         ret  
 				
- 0017  8A 84 0000 R		    mov al,[message0 + si] 
-				    
- 001B  8A 85 0000 R		    mov al,[message0 + di] 
-				    
- 001F  8A 85 0001 R		    mov al,[message0 + di+1] 
-				    
- 0023  8A 85 FFFF R		    mov al,[message0 + di-1] 
+ 0000  BB 0002			subr:       mov  bx,2                                             
+ 0003  B9 0001			            mov  cx,1                                             
+ 0006  8B 04			            mov  ax,[si]                                          
+ 0008  F7 E3			            mul  bx                                               
+ 000A  72 02			            jc   subret                                           
+ 000C  F7 F1			            div  cx                                               
+ 000E  C3			subret:     ret    
 				
- 0027  8B 87 0000 R		    mov ax,[WORD PTR message0 + bx] 
-				
- 002B  8B 84 0000 R		    mov ax,[WORD PTR message0 + si] 
-				
- 002F  8B 85 0000 R		    mov ax,[WORD PTR message0 + di] 
-				
- 0033  8B 84 0007 R		    mov ax,[WORD PTR message0 + si+7] 
-				
- 0037  8B 85 000C R		    mov ax,[WORD PTR message0 + di+12] 
-				
- 003B  8B 87 FFF3 R		    mov ax,[WORD PTR message0 + bx-13] 
-				
- 003F  8B 80 0000 R		    mov ax,[WORD PTR message0 + bx+si] 
-				
- 0043  8B 81 0000 R		    mov ax,[WORD PTR message0 + bx+di] 
-				
- 0047  8B 80 0004 R		    mov ax,[WORD PTR message0 + bx+si+4] 
-				
- 004B  8B 81 FFF7 R		    mov ax,[WORD PTR message0 + bx+di-9] 
-				
- 004F  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
- 0052  CD 21			    int       21h  
+ 000F				tmp:
+ 000F  E8 FFEE			    call subr
+ 0012				done:
+ 0012  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
+ 0015  CD 21			    int       21h  
 				    end       tmp   
-Microsoft (R) Macro Assembler Version 6.11		    03/15/21 02:40:26
+Microsoft (R) Macro Assembler Version 6.11		    03/17/21 01:53:22
 tmp.asm							     Symbols 2 - 1
 
 
@@ -75,9 +47,9 @@ Segments and Groups:
                 N a m e                 Size     Length   Align   Combine Class
 
 DGROUP . . . . . . . . . . . . .	GROUP
-_DATA  . . . . . . . . . . . . .	16 Bit	 0040	  Word	  Public  'DATA'	
+_DATA  . . . . . . . . . . . . .	16 Bit	 0002	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0054	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0017	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -93,11 +65,11 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
-message0 . . . . . . . . . . . .	Byte	 0000	  _DATA	
-message1 . . . . . . . . . . . .	Byte	 0010	  _DATA	
-message2 . . . . . . . . . . . .	Byte	 0020	  _DATA	
-message3 . . . . . . . . . . . .	Byte	 0030	  _DATA	
-tmp  . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+done . . . . . . . . . . . . . .	L Near	 0012	  _TEXT	
+p0 . . . . . . . . . . . . . . .	Word	 0000	  _DATA	
+subret . . . . . . . . . . . . .	L Near	 000E	  _TEXT	
+subr . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+tmp  . . . . . . . . . . . . . .	L Near	 000F	  _TEXT	
 
 	   0 Warnings
 	   0 Errors
