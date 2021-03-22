@@ -53,7 +53,9 @@ nextval_main:
     cmp BYTE PTR [bx], 4
     je testw
 testn:
-    cmp BYTE ptr [bp - 30], ' '
+    cmp BYTE ptr ds:[bp - 30], ' '
+    mov cl, BYTE ptr ds:[bp - 30]
+
     jne teste
 
     sub WORD PTR [di], 1
@@ -61,7 +63,9 @@ testn:
     mov BYTE ptr [bx], 4
     jmp next_val_exit
 teste:
-    cmp BYTE ptr [bp + 1], ' '
+    cmp BYTE ptr ds:[bp + 1], ' '
+    mov cl, BYTE ptr ds:[bp + 1]
+
     jne tests
 
     add WORD PTR [si], 1
@@ -69,7 +73,9 @@ teste:
     mov BYTE ptr [bx], 1
     jmp next_val_exit
 tests:
-    cmp BYTE ptr [bp + 30], ' '
+    cmp BYTE ptr ds:[bp + 30], ' '
+    mov cl, BYTE ptr ds:[bp + 30]
+
     jne testw
 
     add WORD PTR [di], 1
@@ -77,7 +83,9 @@ tests:
     mov BYTE ptr [bx], 2
     jmp next_val_exit
 testw:
-    cmp BYTE ptr [bp - 1], ' '
+    cmp BYTE ptr ds:[bp - 1], ' '
+    mov cl, BYTE ptr ds:[bp - 1]
+
     jne testn
 
     sub WORD PTR [si], 1
