@@ -23,7 +23,7 @@
          public    nextval             ;allow extrnal programs to call
 ;---------------------------------------
          .data  
-p0 db 30               
+    p0 db 30               
          .code                       
 nextval:
     push bp
@@ -69,7 +69,7 @@ tests:
 testw:
     cmp BYTE ptr ds:[bp - 1 - 1], ' '
     jne testn
-    sub WORD PTR ds:[si], 1
+            sub WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 3
 next_val_exit:
     pop ax

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:12:53
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:23:44
 NEXTVAL.ASM						     Page 1 - 1
 
 
@@ -47,32 +47,32 @@ NEXTVAL.ASM						     Page 1 - 1
  000F  03 E8			    add bp, ax
 
  0011				nextval_main:
- 0011  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 0014  74 34			    je testw
- 0016  72 23			    jb tests
- 0018  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 0011  80 3F 03			    cmp BYTE PTR ds:[bx], 3
+ 0014  74 25			    je tests
+ 0016  77 32			    ja testw
+ 0018  80 3F 02			    cmp BYTE PTR ds:[bx], 2
  001B  74 0F			    je teste
  001D				testn:
  001D  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
- 0022  75 26			    jne testw
+ 0022  75 08			    jne teste
  0024  83 2D 01			    sub WORD PTR ds:[di], 1
  0027  C6 07 04			    mov BYTE ptr ds:[bx], 4
  002A  EB 2B			    jmp next_val_exit
  002C				teste:
  002C  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
- 0031  75 EA			    jne testn
+ 0031  75 08			    jne tests
  0033  83 04 01			    add WORD PTR ds:[si], 1
  0036  C6 07 01			    mov BYTE ptr ds:[bx], 1
  0039  EB 1C			    jmp next_val_exit
  003B				tests:
  003B  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
- 0040  75 EA			    jne teste
+ 0040  75 08			    jne testw
  0042  83 05 01			    add WORD PTR ds:[di], 1
  0045  C6 07 02			    mov BYTE ptr ds:[bx], 2
  0048  EB 0D			    jmp next_val_exit
  004A				testw:
  004A  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
- 004F  75 EA			    jne tests
+ 004F  75 CC			    jne testn
  0051  83 2C 01			    sub WORD PTR ds:[si], 1
  0054  C6 07 03			    mov BYTE ptr ds:[bx], 3
  0057				next_val_exit:
@@ -82,7 +82,7 @@ NEXTVAL.ASM						     Page 1 - 1
 
  005A				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:12:53
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:23:44
 NEXTVAL.ASM						     Symbols 2 - 1
 
 
