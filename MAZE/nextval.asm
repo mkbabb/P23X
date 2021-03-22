@@ -43,32 +43,32 @@ calc_offset:
     add bp, ax
 
 nextval_main:
+    cmp BYTE PTR ds:[bx], 3
+    je tests
+    ja testw
     cmp BYTE PTR ds:[bx], 2
-    je testw
-    jb tests
-    cmp BYTE PTR ds:[bx], 4
     je teste
 testn:
     cmp BYTE ptr ds:[bp - 1 - 30], ' '
-    jne testw
+    jne teste
     sub WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 4
     jmp next_val_exit
 teste:
     cmp BYTE ptr ds:[bp - 1 + 1], ' '
-    jne testn
+    jne tests
     add WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 1
     jmp next_val_exit
 tests:
     cmp BYTE ptr ds:[bp - 1 + 30], ' '
-    jne teste
+    jne testw
     add WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 2
     jmp next_val_exit
 testw:
     cmp BYTE ptr ds:[bp - 1 - 1], ' '
-    jne tests
+    jne testn
     sub WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 3
 next_val_exit:
