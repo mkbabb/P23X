@@ -28,44 +28,22 @@ nextval:
     push bp
     push ax
     push cx
-    push dx
+
 calc_offset:
     xor ax, ax
     xor cx, cx
-    xor dx, dx
 
     mov al, ds:[di] 
     sub ax, 1
     
-    mov cx, 30
+    mov cl, 30
     mul cx
 
-    mov dl, BYTE PTR ds:[si]
+    mov cl, BYTE PTR ds:[si]
 
-    add ax, dx
-    sub ax, 1
+    add ax, cx
     
     add bp, ax
-
-    mov dl, ds:[bp]
-    mov ah, 02h                 
-    int 21h
-
-    mov dl, ds:[bp - 30]
-    mov ah, 02h                 
-    int 21h
-    
-    mov dl, ds:[bp + 30]
-    mov ah, 02h                 
-    int 21h
-
-    mov dl, ds:[bp + 1]
-    mov ah, 02h                 
-    int 21h
-
-    mov dl, ds:[bp - 1]
-    mov ah, 02h                 
-    int 21h
 
 
 nextval_main:
@@ -78,31 +56,30 @@ nextval_main:
     cmp BYTE PTR ds:[bx], 4
     je testw
 testn:
-    cmp BYTE ptr ds:[bp - 30], ' '
+    cmp BYTE ptr ds:[bp - 1 - 30], ' '
     jne teste
     sub WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 4
     jmp next_val_exit
 teste:
-    cmp BYTE ptr ds:[bp + 1], ' '
+    cmp BYTE ptr ds:[bp - 1 + 1], ' '
     jne tests
     add WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 1
     jmp next_val_exit
 tests:
-    cmp BYTE ptr ds:[bp + 30], ' '
+    cmp BYTE ptr ds:[bp - 1 + 30], ' '
     jne testw
     add WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 2
     jmp next_val_exit
 testw:
-    cmp BYTE ptr ds:[bp - 1], ' '
+    cmp BYTE ptr ds:[bp - 1 - 1], ' '
     jne testn
     sub WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 3
 
 next_val_exit:
-    pop dx
     pop cx
     pop ax
     pop bp

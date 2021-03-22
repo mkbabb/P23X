@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:43:49
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:50:28
 nextval.asm						     Page 1 - 1
 
 
@@ -32,89 +32,66 @@ nextval.asm						     Page 1 - 1
  0000  55			    push bp
  0001  50			    push ax
  0002  51			    push cx
- 0003  52			    push dx
- 0004				calc_offset:
- 0004  33 C0			    xor ax, ax
- 0006  33 C9			    xor cx, cx
- 0008  33 D2			    xor dx, dx
 
- 000A  8A 05			    mov al, ds:[di] 
- 000C  83 E8 01			    sub ax, 1
+ 0003				calc_offset:
+ 0003  33 C0			    xor ax, ax
+ 0005  33 C9			    xor cx, cx
+
+ 0007  8A 05			    mov al, ds:[di] 
+ 0009  83 E8 01			    sub ax, 1
 				    
- 000F  B9 001E			    mov cx, 30
- 0012  F7 E1			    mul cx
+ 000C  B1 1E			    mov cl, 30
+ 000E  F7 E1			    mul cx
 
- 0014  8A 14			    mov dl, BYTE PTR ds:[si]
+ 0010  8A 0C			    mov cl, BYTE PTR ds:[si]
 
- 0016  03 C2			    add ax, dx
- 0018  83 E8 01			    sub ax, 1
+ 0012  03 C1			    add ax, cx
 				    
- 001B  03 E8			    add bp, ax
-
- 001D  3E: 8A 56 00		    mov dl, ds:[bp]
- 0021  B4 02			    mov ah, 02h                 
- 0023  CD 21			    int 21h
-
- 0025  3E: 8A 56 E2		    mov dl, ds:[bp - 30]
- 0029  B4 02			    mov ah, 02h                 
- 002B  CD 21			    int 21h
-				    
- 002D  3E: 8A 56 1E		    mov dl, ds:[bp + 30]
- 0031  B4 02			    mov ah, 02h                 
- 0033  CD 21			    int 21h
-
- 0035  3E: 8A 56 01		    mov dl, ds:[bp + 1]
- 0039  B4 02			    mov ah, 02h                 
- 003B  CD 21			    int 21h
-
- 003D  3E: 8A 56 FF		    mov dl, ds:[bp - 1]
- 0041  B4 02			    mov ah, 02h                 
- 0043  CD 21			    int 21h
+ 0014  03 E8			    add bp, ax
 
 
- 0045				nextval_main:
- 0045  80 3F 01			    cmp BYTE PTR ds:[bx], 1
- 0048  74 0F			    je testn
- 004A  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 004D  74 19			    je teste
- 004F  80 3F 03			    cmp BYTE PTR ds:[bx], 3
- 0052  74 23			    je tests
- 0054  80 3F 04			    cmp BYTE PTR ds:[bx], 4
- 0057  74 2D			    je testw
- 0059				testn:
- 0059  3E: 80 7E E2 20		    cmp BYTE ptr ds:[bp - 30], ' '
- 005E  75 08			    jne teste
- 0060  83 2D 01			    sub WORD PTR ds:[di], 1
- 0063  C6 07 04			    mov BYTE ptr ds:[bx], 4
- 0066  EB 2B			    jmp next_val_exit
- 0068				teste:
- 0068  3E: 80 7E 01 20		    cmp BYTE ptr ds:[bp + 1], ' '
- 006D  75 08			    jne tests
- 006F  83 04 01			    add WORD PTR ds:[si], 1
- 0072  C6 07 01			    mov BYTE ptr ds:[bx], 1
- 0075  EB 1C			    jmp next_val_exit
- 0077				tests:
- 0077  3E: 80 7E 1E 20		    cmp BYTE ptr ds:[bp + 30], ' '
- 007C  75 08			    jne testw
- 007E  83 05 01			    add WORD PTR ds:[di], 1
- 0081  C6 07 02			    mov BYTE ptr ds:[bx], 2
- 0084  EB 0D			    jmp next_val_exit
- 0086				testw:
- 0086  3E: 80 7E FF 20		    cmp BYTE ptr ds:[bp - 1], ' '
- 008B  75 CC			    jne testn
- 008D  83 2C 01			    sub WORD PTR ds:[si], 1
- 0090  C6 07 03			    mov BYTE ptr ds:[bx], 3
+ 0016				nextval_main:
+ 0016  80 3F 01			    cmp BYTE PTR ds:[bx], 1
+ 0019  74 0F			    je testn
+ 001B  80 3F 02			    cmp BYTE PTR ds:[bx], 2
+ 001E  74 19			    je teste
+ 0020  80 3F 03			    cmp BYTE PTR ds:[bx], 3
+ 0023  74 23			    je tests
+ 0025  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 0028  74 2D			    je testw
+ 002A				testn:
+ 002A  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
+ 002F  75 08			    jne teste
+ 0031  83 2D 01			    sub WORD PTR ds:[di], 1
+ 0034  C6 07 04			    mov BYTE ptr ds:[bx], 4
+ 0037  EB 2B			    jmp next_val_exit
+ 0039				teste:
+ 0039  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
+ 003E  75 08			    jne tests
+ 0040  83 04 01			    add WORD PTR ds:[si], 1
+ 0043  C6 07 01			    mov BYTE ptr ds:[bx], 1
+ 0046  EB 1C			    jmp next_val_exit
+ 0048				tests:
+ 0048  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
+ 004D  75 08			    jne testw
+ 004F  83 05 01			    add WORD PTR ds:[di], 1
+ 0052  C6 07 02			    mov BYTE ptr ds:[bx], 2
+ 0055  EB 0D			    jmp next_val_exit
+ 0057				testw:
+ 0057  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
+ 005C  75 CC			    jne testn
+ 005E  83 2C 01			    sub WORD PTR ds:[si], 1
+ 0061  C6 07 03			    mov BYTE ptr ds:[bx], 3
 
- 0093				next_val_exit:
- 0093  5A			    pop dx
- 0094  59			    pop cx
- 0095  58			    pop ax
- 0096  5D			    pop bp
- 0097  C3			    ret
+ 0064				next_val_exit:
+ 0064  59			    pop cx
+ 0065  58			    pop ax
+ 0066  5D			    pop bp
+ 0067  C3			    ret
 
- 0098				exit:
+ 0068				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:43:49
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:50:28
 nextval.asm						     Symbols 2 - 1
 
 
@@ -126,7 +103,7 @@ Segments and Groups:
 
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0098	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0068	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -142,15 +119,15 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
-calc_offset  . . . . . . . . . .	L Near	 0004	  _TEXT	
-exit . . . . . . . . . . . . . .	L Near	 0098	  _TEXT	
-next_val_exit  . . . . . . . . .	L Near	 0093	  _TEXT	
-nextval_main . . . . . . . . . .	L Near	 0045	  _TEXT	
+calc_offset  . . . . . . . . . .	L Near	 0003	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 0068	  _TEXT	
+next_val_exit  . . . . . . . . .	L Near	 0064	  _TEXT	
+nextval_main . . . . . . . . . .	L Near	 0016	  _TEXT	
 nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
-teste  . . . . . . . . . . . . .	L Near	 0068	  _TEXT	
-testn  . . . . . . . . . . . . .	L Near	 0059	  _TEXT	
-tests  . . . . . . . . . . . . .	L Near	 0077	  _TEXT	
-testw  . . . . . . . . . . . . .	L Near	 0086	  _TEXT	
+teste  . . . . . . . . . . . . .	L Near	 0039	  _TEXT	
+testn  . . . . . . . . . . . . .	L Near	 002A	  _TEXT	
+tests  . . . . . . . . . . . . .	L Near	 0048	  _TEXT	
+testw  . . . . . . . . . . . . .	L Near	 0057	  _TEXT	
 
 	   0 Warnings
 	   0 Errors
