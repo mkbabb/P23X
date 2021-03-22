@@ -1,5 +1,5 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:55:16
-nextval.asm						     Page 1 - 1
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 00:52:57
+NEXTVAL.ASM						     Page 1 - 1
 
 
 				;---------------------------------------------------------------------
@@ -26,7 +26,8 @@ nextval.asm						     Page 1 - 1
 				         .8086                         ;only allow 8086 instructions
 				         public    nextval             ;allow extrnal programs to call
 				;---------------------------------------
- 0000				         .data                        
+ 0000				         .data  
+ 0000 1E			p0 db 30                    
  0000				         .code                       
  0000				nextval:
  0000  55			    push bp
@@ -35,7 +36,6 @@ nextval.asm						     Page 1 - 1
 
  0003				calc_offset:
  0003  33 C0			    xor ax, ax
-
 
  0005  8A 05			    mov al, ds:[di] 
  0007  83 E8 01			    sub ax, 1
@@ -49,37 +49,35 @@ nextval.asm						     Page 1 - 1
 				    
  0013  03 E8			    add bp, ax
 
-
  0015				nextval_main:
  0015  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 0018  74 16			    je teste
- 001A  80 3F 03			    cmp BYTE PTR ds:[bx], 3
- 001D  74 20			    je tests
- 001F  77 2D			    ja testw
+ 0018  74 34			    je testw
+ 001A  72 23			    jb tests
+ 001C  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 001F  74 0F			    je teste
  0021				testn:
  0021  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
- 0026  75 08			    jne teste
+ 0026  75 26			    jne testw
  0028  83 2D 01			    sub WORD PTR ds:[di], 1
  002B  C6 07 04			    mov BYTE ptr ds:[bx], 4
  002E  EB 2B			    jmp next_val_exit
  0030				teste:
  0030  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
- 0035  75 08			    jne tests
+ 0035  75 EA			    jne testn
  0037  83 04 01			    add WORD PTR ds:[si], 1
  003A  C6 07 01			    mov BYTE ptr ds:[bx], 1
  003D  EB 1C			    jmp next_val_exit
  003F				tests:
  003F  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
- 0044  75 08			    jne testw
+ 0044  75 EA			    jne teste
  0046  83 05 01			    add WORD PTR ds:[di], 1
  0049  C6 07 02			    mov BYTE ptr ds:[bx], 2
  004C  EB 0D			    jmp next_val_exit
  004E				testw:
  004E  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
- 0053  75 CC			    jne testn
+ 0053  75 EA			    jne tests
  0055  83 2C 01			    sub WORD PTR ds:[si], 1
  0058  C6 07 03			    mov BYTE ptr ds:[bx], 3
-
  005B				next_val_exit:
  005B  59			    pop cx
  005C  58			    pop ax
@@ -88,8 +86,8 @@ nextval.asm						     Page 1 - 1
 
  005F				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:55:16
-nextval.asm						     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 00:52:57
+NEXTVAL.ASM						     Symbols 2 - 1
 
 
 
@@ -99,7 +97,7 @@ Segments and Groups:
                 N a m e                 Size     Length   Align   Combine Class
 
 DGROUP . . . . . . . . . . . . .	GROUP
-_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+_DATA  . . . . . . . . . . . . .	16 Bit	 0001	  Word	  Public  'DATA'	
 _TEXT  . . . . . . . . . . . . .	16 Bit	 005F	  Word	  Public  'CODE'	
 
 
@@ -121,6 +119,7 @@ exit . . . . . . . . . . . . . .	L Near	 005F	  _TEXT
 next_val_exit  . . . . . . . . .	L Near	 005B	  _TEXT	
 nextval_main . . . . . . . . . .	L Near	 0015	  _TEXT	
 nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
+p0 . . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
 teste  . . . . . . . . . . . . .	L Near	 0030	  _TEXT	
 testn  . . . . . . . . . . . . .	L Near	 0021	  _TEXT	
 tests  . . . . . . . . . . . . .	L Near	 003F	  _TEXT	

@@ -22,7 +22,8 @@
          .8086                         ;only allow 8086 instructions
          public    nextval             ;allow extrnal programs to call
 ;---------------------------------------
-         .data                        
+         .data  
+p0 db 30                    
          .code                       
 nextval:
     push bp
@@ -31,7 +32,6 @@ nextval:
 
 calc_offset:
     xor ax, ax
-
 
     mov al, ds:[di] 
     sub ax, 1
@@ -45,37 +45,35 @@ calc_offset:
     
     add bp, ax
 
-
 nextval_main:
     cmp BYTE PTR ds:[bx], 2
+    je testw
+    jb tests
+    cmp BYTE PTR ds:[bx], 4
     je teste
-    cmp BYTE PTR ds:[bx], 3
-    je tests
-    ja testw
 testn:
     cmp BYTE ptr ds:[bp - 1 - 30], ' '
-    jne teste
+    jne testw
     sub WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 4
     jmp next_val_exit
 teste:
     cmp BYTE ptr ds:[bp - 1 + 1], ' '
-    jne tests
+    jne testn
     add WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 1
     jmp next_val_exit
 tests:
     cmp BYTE ptr ds:[bp - 1 + 30], ' '
-    jne testw
+    jne teste
     add WORD PTR ds:[di], 1
     mov BYTE ptr ds:[bx], 2
     jmp next_val_exit
 testw:
     cmp BYTE ptr ds:[bp - 1 - 1], ' '
-    jne testn
+    jne tests
     sub WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 3
-
 next_val_exit:
     pop cx
     pop ax
