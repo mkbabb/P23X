@@ -1,0 +1,155 @@
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:29:38
+nextval.asm						     Page 1 - 1
+
+
+				;---------------------------------------------------------------------
+				; Program:   nextval subroutine
+				;
+				; Function:  Find next mouse move in an array 15 by 30.
+				;            We can move into a position if its contents is blank ( 20h ).
+				;
+				; Input:     Calling sequence is:
+				;            x    pointer   si
+				;            y    pointer   di
+				;            dir  pointer   bx
+				;            maze pointer   bp
+				;
+				; Output:    x,y,dir modified in caller's data segment
+				;
+				; Owner:     Dana A. Lasher
+				;
+				; Date:      Update Reason
+				; --------------------------
+				; 11/06/2016 Original version
+				;---------------------------------------
+				         .model    small               ;64k code and 64k data
+				         .8086                         ;only allow 8086 instructions
+				         public    nextval             ;allow extrnal programs to call
+				;---------------------------------------
+ 0000				         .data                        
+ 0000				         .code                       
+ 0000				nextval:
+ 0000  55			    push bp
+ 0001  50			    push ax
+ 0002  51			    push cx
+ 0003  52			    push dx
+ 0004				calc_offset:
+ 0004  33 C0			    xor ax, ax
+ 0006  33 C9			    xor cx, cx
+ 0008  33 D2			    xor dx, dx
+				    ; mov al, ds:[di] 
+				    ; sub al, 1
+				    
+				    ; mov cl, 30
+				    ; mul cl
+
+				    ; add al, ds:[si]
+				    ; sub al, 1
+				    ; adc ah, 0
+				    
+				    ; add bp, ax
+
+ 000A  3E: 8A 56 00		    mov dl, ds:[bp]
+ 000E  B4 02			    mov ah, 02h                 
+ 0010  CD 21			    int 21h
+
+				    mov dl, ds:[bp + si*30 - 30]
+nextval.asm(52): error A2032: invalid use of register
+ 0012  B4 02			    mov ah, 02h                 
+ 0014  CD 21			    int 21h
+				    
+ 0016  3E: 8A 56 1E		    mov dl, ds:[bp + 30]
+ 001A  B4 02			    mov ah, 02h                 
+ 001C  CD 21			    int 21h
+
+ 001E  3E: 8A 56 01		    mov dl, ds:[bp + 1]
+ 0022  B4 02			    mov ah, 02h                 
+ 0024  CD 21			    int 21h
+
+ 0026  3E: 8A 56 FF		    mov dl, ds:[bp - 1]
+ 002A  B4 02			    mov ah, 02h                 
+ 002C  CD 21			    int 21h
+
+
+ 0039				nextval_main:
+ 0039  80 3F 01			    cmp BYTE PTR ds:[bx], 1
+ 003C  74 0F			    je testn
+ 003E  80 3F 02			    cmp BYTE PTR ds:[bx], 2
+ 0041  74 19			    je teste
+ 0043  80 3F 03			    cmp BYTE PTR ds:[bx], 3
+ 0046  74 23			    je tests
+ 0048  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 004B  74 2D			    je testw
+ 004D				testn:
+ 004D  3E: 80 7E E2 20		    cmp BYTE ptr ds:[bp - 30], ' '
+ 0052  75 08			    jne teste
+ 0054  83 2D 01			    sub WORD PTR ds:[di], 1
+ 0057  C6 07 04			    mov BYTE ptr ds:[bx], 4
+ 005A  EB 2B			    jmp next_val_exit
+ 005C				teste:
+ 005C  3E: 80 7E 01 20		    cmp BYTE ptr ds:[bp + 1], ' '
+ 0061  75 08			    jne tests
+ 0063  83 04 01			    add WORD PTR ds:[si], 1
+ 0066  C6 07 01			    mov BYTE ptr ds:[bx], 1
+ 0069  EB 1C			    jmp next_val_exit
+ 006B				tests:
+ 006B  3E: 80 7E 1E 20		    cmp BYTE ptr ds:[bp + 30], ' '
+ 0070  75 08			    jne testw
+ 0072  83 05 01			    add WORD PTR ds:[di], 1
+ 0075  C6 07 02			    mov BYTE ptr ds:[bx], 2
+ 0078  EB 0D			    jmp next_val_exit
+ 007A				testw:
+ 007A  3E: 80 7E FF 20		    cmp BYTE ptr ds:[bp - 1], ' '
+ 007F  75 CC			    jne testn
+ 0081  83 2C 01			    sub WORD PTR ds:[si], 1
+ 0084  C6 07 03			    mov BYTE ptr ds:[bx], 3
+
+ 0087				next_val_exit:
+ 0087  5A			    pop dx
+ 0088  59			    pop cx
+ 0089  58			    pop ax
+ 008A  5D			    pop bp
+ 008B  C3			    ret
+
+ 008C				exit:
+				    end   
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:29:38
+nextval.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 008C	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+calc_offset  . . . . . . . . . .	L Near	 0004	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 008C	  _TEXT	
+next_val_exit  . . . . . . . . .	L Near	 0087	  _TEXT	
+nextval_main . . . . . . . . . .	L Near	 0039	  _TEXT	
+nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
+teste  . . . . . . . . . . . . .	L Near	 005C	  _TEXT	
+testn  . . . . . . . . . . . . .	L Near	 004D	  _TEXT	
+tests  . . . . . . . . . . . . .	L Near	 006B	  _TEXT	
+testw  . . . . . . . . . . . . .	L Near	 007A	  _TEXT	
+
+	   0 Warnings
+	   1 Errors
