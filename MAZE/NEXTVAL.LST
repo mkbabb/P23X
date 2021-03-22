@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:50:28
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:55:16
 nextval.asm						     Page 1 - 1
 
 
@@ -35,63 +35,60 @@ nextval.asm						     Page 1 - 1
 
  0003				calc_offset:
  0003  33 C0			    xor ax, ax
- 0005  33 C9			    xor cx, cx
 
- 0007  8A 05			    mov al, ds:[di] 
- 0009  83 E8 01			    sub ax, 1
+
+ 0005  8A 05			    mov al, ds:[di] 
+ 0007  83 E8 01			    sub ax, 1
 				    
- 000C  B1 1E			    mov cl, 30
- 000E  F7 E1			    mul cx
+ 000A  B9 001E			    mov cx, 30
+ 000D  F6 E1			    mul cl
 
- 0010  8A 0C			    mov cl, BYTE PTR ds:[si]
+ 000F  8A 0C			    mov cl, BYTE PTR ds:[si]
 
- 0012  03 C1			    add ax, cx
+ 0011  03 C1			    add ax, cx
 				    
- 0014  03 E8			    add bp, ax
+ 0013  03 E8			    add bp, ax
 
 
- 0016				nextval_main:
- 0016  80 3F 01			    cmp BYTE PTR ds:[bx], 1
- 0019  74 0F			    je testn
- 001B  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 001E  74 19			    je teste
- 0020  80 3F 03			    cmp BYTE PTR ds:[bx], 3
- 0023  74 23			    je tests
- 0025  80 3F 04			    cmp BYTE PTR ds:[bx], 4
- 0028  74 2D			    je testw
- 002A				testn:
- 002A  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
- 002F  75 08			    jne teste
- 0031  83 2D 01			    sub WORD PTR ds:[di], 1
- 0034  C6 07 04			    mov BYTE ptr ds:[bx], 4
- 0037  EB 2B			    jmp next_val_exit
- 0039				teste:
- 0039  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
- 003E  75 08			    jne tests
- 0040  83 04 01			    add WORD PTR ds:[si], 1
- 0043  C6 07 01			    mov BYTE ptr ds:[bx], 1
- 0046  EB 1C			    jmp next_val_exit
- 0048				tests:
- 0048  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
- 004D  75 08			    jne testw
- 004F  83 05 01			    add WORD PTR ds:[di], 1
- 0052  C6 07 02			    mov BYTE ptr ds:[bx], 2
- 0055  EB 0D			    jmp next_val_exit
- 0057				testw:
- 0057  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
- 005C  75 CC			    jne testn
- 005E  83 2C 01			    sub WORD PTR ds:[si], 1
- 0061  C6 07 03			    mov BYTE ptr ds:[bx], 3
+ 0015				nextval_main:
+ 0015  80 3F 02			    cmp BYTE PTR ds:[bx], 2
+ 0018  74 16			    je teste
+ 001A  80 3F 03			    cmp BYTE PTR ds:[bx], 3
+ 001D  74 20			    je tests
+ 001F  77 2D			    ja testw
+ 0021				testn:
+ 0021  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
+ 0026  75 08			    jne teste
+ 0028  83 2D 01			    sub WORD PTR ds:[di], 1
+ 002B  C6 07 04			    mov BYTE ptr ds:[bx], 4
+ 002E  EB 2B			    jmp next_val_exit
+ 0030				teste:
+ 0030  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
+ 0035  75 08			    jne tests
+ 0037  83 04 01			    add WORD PTR ds:[si], 1
+ 003A  C6 07 01			    mov BYTE ptr ds:[bx], 1
+ 003D  EB 1C			    jmp next_val_exit
+ 003F				tests:
+ 003F  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
+ 0044  75 08			    jne testw
+ 0046  83 05 01			    add WORD PTR ds:[di], 1
+ 0049  C6 07 02			    mov BYTE ptr ds:[bx], 2
+ 004C  EB 0D			    jmp next_val_exit
+ 004E				testw:
+ 004E  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
+ 0053  75 CC			    jne testn
+ 0055  83 2C 01			    sub WORD PTR ds:[si], 1
+ 0058  C6 07 03			    mov BYTE ptr ds:[bx], 3
 
- 0064				next_val_exit:
- 0064  59			    pop cx
- 0065  58			    pop ax
- 0066  5D			    pop bp
- 0067  C3			    ret
+ 005B				next_val_exit:
+ 005B  59			    pop cx
+ 005C  58			    pop ax
+ 005D  5D			    pop bp
+ 005E  C3			    ret
 
- 0068				exit:
+ 005F				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:50:28
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:55:16
 nextval.asm						     Symbols 2 - 1
 
 
@@ -103,7 +100,7 @@ Segments and Groups:
 
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0068	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 005F	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -120,14 +117,14 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 calc_offset  . . . . . . . . . .	L Near	 0003	  _TEXT	
-exit . . . . . . . . . . . . . .	L Near	 0068	  _TEXT	
-next_val_exit  . . . . . . . . .	L Near	 0064	  _TEXT	
-nextval_main . . . . . . . . . .	L Near	 0016	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 005F	  _TEXT	
+next_val_exit  . . . . . . . . .	L Near	 005B	  _TEXT	
+nextval_main . . . . . . . . . .	L Near	 0015	  _TEXT	
 nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
-teste  . . . . . . . . . . . . .	L Near	 0039	  _TEXT	
-testn  . . . . . . . . . . . . .	L Near	 002A	  _TEXT	
-tests  . . . . . . . . . . . . .	L Near	 0048	  _TEXT	
-testw  . . . . . . . . . . . . .	L Near	 0057	  _TEXT	
+teste  . . . . . . . . . . . . .	L Near	 0030	  _TEXT	
+testn  . . . . . . . . . . . . .	L Near	 0021	  _TEXT	
+tests  . . . . . . . . . . . . .	L Near	 003F	  _TEXT	
+testw  . . . . . . . . . . . . .	L Near	 004E	  _TEXT	
 
 	   0 Warnings
 	   0 Errors

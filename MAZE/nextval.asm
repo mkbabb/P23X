@@ -31,13 +31,13 @@ nextval:
 
 calc_offset:
     xor ax, ax
-    xor cx, cx
+
 
     mov al, ds:[di] 
     sub ax, 1
     
-    mov cl, 30
-    mul cx
+    mov cx, 30
+    mul cl
 
     mov cl, BYTE PTR ds:[si]
 
@@ -47,14 +47,11 @@ calc_offset:
 
 
 nextval_main:
-    cmp BYTE PTR ds:[bx], 1
-    je testn
     cmp BYTE PTR ds:[bx], 2
     je teste
     cmp BYTE PTR ds:[bx], 3
     je tests
-    cmp BYTE PTR ds:[bx], 4
-    je testw
+    ja testw
 testn:
     cmp BYTE ptr ds:[bp - 1 - 30], ' '
     jne teste
