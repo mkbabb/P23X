@@ -32,65 +32,60 @@ calc_offset:
     xor ax, ax
     xor cx, cx
 
-    mov al, BYTE PTR [di]
-    sub al, 1
+    mov al, BYTE PTR ds:[di]
+    sub ax, 1
     
     mov cl, 30
-
     mul cl
 
-    add al, BYTE PTR [si]
-    sub al, 1
+    add al, BYTE PTR ds:[si]
+    sub ax, 1
 
     add bp, ax
 nextval_main:
-    cmp BYTE PTR [bx], 1
+    cmp BYTE PTR ds:[bx], 1
     je testn
-    cmp BYTE PTR [bx], 2
+    cmp BYTE PTR ds:[bx], 2
     je teste
-    cmp BYTE PTR [bx], 3
+    cmp BYTE PTR ds:[bx], 3
     je tests
-    cmp BYTE PTR [bx], 4
+    cmp BYTE PTR ds:[bx], 4
     je testw
 testn:
     cmp BYTE ptr ds:[bp - 30], ' '
-    mov cl, BYTE ptr ds:[bp - 30]
 
     jne teste
 
-    sub WORD PTR [di], 1
+    sub BYTE PTR ds:[di], 1
 
-    mov BYTE ptr [bx], 4
+    mov BYTE ptr ds:[bx], 4
     jmp next_val_exit
 teste:
     cmp BYTE ptr ds:[bp + 1], ' '
-    mov cl, BYTE ptr ds:[bp + 1]
 
     jne tests
 
-    add WORD PTR [si], 1
+    add BYTE PTR ds:[si], 1
 
-    mov BYTE ptr [bx], 1
+    mov BYTE ptr ds:[bx], 1
     jmp next_val_exit
 tests:
     cmp BYTE ptr ds:[bp + 30], ' '
-    mov cl, BYTE ptr ds:[bp + 30]
 
     jne testw
 
-    add WORD PTR [di], 1
+    add BYTE PTR ds:[di], 1
 
-    mov BYTE ptr [bx], 2
+    mov BYTE ptr ds:[bx], 2
     jmp next_val_exit
 testw:
     cmp BYTE ptr ds:[bp - 1], ' '
-    mov cl, BYTE ptr ds:[bp - 1]
 
     jne testn
 
-    sub WORD PTR [si], 1
+    sub BYTE PTR ds:[si], 1
 
-    mov BYTE ptr [bx], 3
+    mov BYTE ptr ds:[bx], 3
     jmp next_val_exit
 
 next_val_exit:
