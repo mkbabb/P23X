@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/22/21 00:52:57
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:04:38
 NEXTVAL.ASM						     Page 1 - 1
 
 
@@ -27,66 +27,62 @@ NEXTVAL.ASM						     Page 1 - 1
 				         public    nextval             ;allow extrnal programs to call
 				;---------------------------------------
  0000				         .data  
- 0000 1E			p0 db 30                    
+ 0000 1E			p0 db 30               
  0000				         .code                       
  0000				nextval:
  0000  55			    push bp
  0001  50			    push ax
- 0002  51			    push cx
 
- 0003				calc_offset:
- 0003  33 C0			    xor ax, ax
-
- 0005  8A 05			    mov al, ds:[di] 
- 0007  83 E8 01			    sub ax, 1
+ 0002				calc_offset:
+ 0002  33 C0			    xor ax, ax
+ 0004  02 04			    add al, BYTE PTR ds:[si]
 				    
- 000A  B9 001E			    mov cx, 30
- 000D  F6 E1			    mul cl
-
- 000F  8A 0C			    mov cl, BYTE PTR ds:[si]
-
- 0011  03 C1			    add ax, cx
+ 0006  03 E8			    add bp, ax
 				    
- 0013  03 E8			    add bp, ax
+ 0008  8A 05			    mov al, ds:[di] 
+ 000A  48			    dec ax
+				    
+ 000B  F6 2E 0000 R		    imul [p0]
 
- 0015				nextval_main:
- 0015  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 0018  74 34			    je testw
- 001A  72 23			    jb tests
- 001C  80 3F 04			    cmp BYTE PTR ds:[bx], 4
- 001F  74 0F			    je teste
- 0021				testn:
- 0021  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
- 0026  75 26			    jne testw
- 0028  83 2D 01			    sub WORD PTR ds:[di], 1
- 002B  C6 07 04			    mov BYTE ptr ds:[bx], 4
- 002E  EB 2B			    jmp next_val_exit
- 0030				teste:
- 0030  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
- 0035  75 EA			    jne testn
- 0037  83 04 01			    add WORD PTR ds:[si], 1
- 003A  C6 07 01			    mov BYTE ptr ds:[bx], 1
- 003D  EB 1C			    jmp next_val_exit
- 003F				tests:
- 003F  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
- 0044  75 EA			    jne teste
- 0046  83 05 01			    add WORD PTR ds:[di], 1
- 0049  C6 07 02			    mov BYTE ptr ds:[bx], 2
- 004C  EB 0D			    jmp next_val_exit
- 004E				testw:
- 004E  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
- 0053  75 EA			    jne tests
- 0055  83 2C 01			    sub WORD PTR ds:[si], 1
- 0058  C6 07 03			    mov BYTE ptr ds:[bx], 3
- 005B				next_val_exit:
- 005B  59			    pop cx
- 005C  58			    pop ax
- 005D  5D			    pop bp
- 005E  C3			    ret
+ 000F  03 E8			    add bp, ax
 
- 005F				exit:
+ 0011				nextval_main:
+ 0011  80 3F 02			    cmp BYTE PTR ds:[bx], 2
+ 0014  74 34			    je testw
+ 0016  72 23			    jb tests
+ 0018  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 001B  74 0F			    je teste
+ 001D				testn:
+ 001D  3E: 80 7E E1 20		    cmp BYTE ptr ds:[bp - 1 - 30], ' '
+ 0022  75 26			    jne testw
+ 0024  83 2D 01			    sub WORD PTR ds:[di], 1
+ 0027  C6 07 04			    mov BYTE ptr ds:[bx], 4
+ 002A  EB 2B			    jmp next_val_exit
+ 002C				teste:
+ 002C  3E: 80 7E 00 20		    cmp BYTE ptr ds:[bp - 1 + 1], ' '
+ 0031  75 EA			    jne testn
+ 0033  83 04 01			    add WORD PTR ds:[si], 1
+ 0036  C6 07 01			    mov BYTE ptr ds:[bx], 1
+ 0039  EB 1C			    jmp next_val_exit
+ 003B				tests:
+ 003B  3E: 80 7E 1D 20		    cmp BYTE ptr ds:[bp - 1 + 30], ' '
+ 0040  75 EA			    jne teste
+ 0042  83 05 01			    add WORD PTR ds:[di], 1
+ 0045  C6 07 02			    mov BYTE ptr ds:[bx], 2
+ 0048  EB 0D			    jmp next_val_exit
+ 004A				testw:
+ 004A  3E: 80 7E FE 20		    cmp BYTE ptr ds:[bp - 1 - 1], ' '
+ 004F  75 EA			    jne tests
+ 0051  83 2C 01			    sub WORD PTR ds:[si], 1
+ 0054  C6 07 03			    mov BYTE ptr ds:[bx], 3
+ 0057				next_val_exit:
+ 0057  58			    pop ax
+ 0058  5D			    pop bp
+ 0059  C3			    ret
+
+ 005A				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/22/21 00:52:57
+Microsoft (R) Macro Assembler Version 6.11		    03/22/21 01:04:38
 NEXTVAL.ASM						     Symbols 2 - 1
 
 
@@ -98,7 +94,7 @@ Segments and Groups:
 
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0001	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 005F	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 005A	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -114,16 +110,16 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
-calc_offset  . . . . . . . . . .	L Near	 0003	  _TEXT	
-exit . . . . . . . . . . . . . .	L Near	 005F	  _TEXT	
-next_val_exit  . . . . . . . . .	L Near	 005B	  _TEXT	
-nextval_main . . . . . . . . . .	L Near	 0015	  _TEXT	
+calc_offset  . . . . . . . . . .	L Near	 0002	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 005A	  _TEXT	
+next_val_exit  . . . . . . . . .	L Near	 0057	  _TEXT	
+nextval_main . . . . . . . . . .	L Near	 0011	  _TEXT	
 nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
 p0 . . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
-teste  . . . . . . . . . . . . .	L Near	 0030	  _TEXT	
-testn  . . . . . . . . . . . . .	L Near	 0021	  _TEXT	
-tests  . . . . . . . . . . . . .	L Near	 003F	  _TEXT	
-testw  . . . . . . . . . . . . .	L Near	 004E	  _TEXT	
+teste  . . . . . . . . . . . . .	L Near	 002C	  _TEXT	
+testn  . . . . . . . . . . . . .	L Near	 001D	  _TEXT	
+tests  . . . . . . . . . . . . .	L Near	 003B	  _TEXT	
+testw  . . . . . . . . . . . . .	L Near	 004A	  _TEXT	
 
 	   0 Warnings
 	   0 Errors

@@ -23,26 +23,23 @@
          public    nextval             ;allow extrnal programs to call
 ;---------------------------------------
          .data  
-p0 db 30                    
+p0 db 30               
          .code                       
 nextval:
     push bp
     push ax
-    push cx
 
 calc_offset:
     xor ax, ax
-
+    add al, BYTE PTR ds:[si]
+    
+    add bp, ax
+    
     mov al, ds:[di] 
-    sub ax, 1
+    dec ax
     
-    mov cx, 30
-    mul cl
+    imul [p0]
 
-    mov cl, BYTE PTR ds:[si]
-
-    add ax, cx
-    
     add bp, ax
 
 nextval_main:
@@ -75,7 +72,6 @@ testw:
     sub WORD PTR ds:[si], 1
     mov BYTE ptr ds:[bx], 3
 next_val_exit:
-    pop cx
     pop ax
     pop bp
     ret
