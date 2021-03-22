@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:29:38
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:43:49
 nextval.asm						     Page 1 - 1
 
 
@@ -37,83 +37,84 @@ nextval.asm						     Page 1 - 1
  0004  33 C0			    xor ax, ax
  0006  33 C9			    xor cx, cx
  0008  33 D2			    xor dx, dx
-				    ; mov al, ds:[di] 
-				    ; sub al, 1
+
+ 000A  8A 05			    mov al, ds:[di] 
+ 000C  83 E8 01			    sub ax, 1
 				    
-				    ; mov cl, 30
-				    ; mul cl
+ 000F  B9 001E			    mov cx, 30
+ 0012  F7 E1			    mul cx
 
-				    ; add al, ds:[si]
-				    ; sub al, 1
-				    ; adc ah, 0
+ 0014  8A 14			    mov dl, BYTE PTR ds:[si]
+
+ 0016  03 C2			    add ax, dx
+ 0018  83 E8 01			    sub ax, 1
 				    
-				    ; add bp, ax
+ 001B  03 E8			    add bp, ax
 
- 000A  3E: 8A 56 00		    mov dl, ds:[bp]
- 000E  B4 02			    mov ah, 02h                 
- 0010  CD 21			    int 21h
+ 001D  3E: 8A 56 00		    mov dl, ds:[bp]
+ 0021  B4 02			    mov ah, 02h                 
+ 0023  CD 21			    int 21h
 
-				    mov dl, ds:[bp + si*30 - 30]
-nextval.asm(52): error A2032: invalid use of register
- 0012  B4 02			    mov ah, 02h                 
- 0014  CD 21			    int 21h
+ 0025  3E: 8A 56 E2		    mov dl, ds:[bp - 30]
+ 0029  B4 02			    mov ah, 02h                 
+ 002B  CD 21			    int 21h
 				    
- 0016  3E: 8A 56 1E		    mov dl, ds:[bp + 30]
- 001A  B4 02			    mov ah, 02h                 
- 001C  CD 21			    int 21h
+ 002D  3E: 8A 56 1E		    mov dl, ds:[bp + 30]
+ 0031  B4 02			    mov ah, 02h                 
+ 0033  CD 21			    int 21h
 
- 001E  3E: 8A 56 01		    mov dl, ds:[bp + 1]
- 0022  B4 02			    mov ah, 02h                 
- 0024  CD 21			    int 21h
+ 0035  3E: 8A 56 01		    mov dl, ds:[bp + 1]
+ 0039  B4 02			    mov ah, 02h                 
+ 003B  CD 21			    int 21h
 
- 0026  3E: 8A 56 FF		    mov dl, ds:[bp - 1]
- 002A  B4 02			    mov ah, 02h                 
- 002C  CD 21			    int 21h
+ 003D  3E: 8A 56 FF		    mov dl, ds:[bp - 1]
+ 0041  B4 02			    mov ah, 02h                 
+ 0043  CD 21			    int 21h
 
 
- 0039				nextval_main:
- 0039  80 3F 01			    cmp BYTE PTR ds:[bx], 1
- 003C  74 0F			    je testn
- 003E  80 3F 02			    cmp BYTE PTR ds:[bx], 2
- 0041  74 19			    je teste
- 0043  80 3F 03			    cmp BYTE PTR ds:[bx], 3
- 0046  74 23			    je tests
- 0048  80 3F 04			    cmp BYTE PTR ds:[bx], 4
- 004B  74 2D			    je testw
- 004D				testn:
- 004D  3E: 80 7E E2 20		    cmp BYTE ptr ds:[bp - 30], ' '
- 0052  75 08			    jne teste
- 0054  83 2D 01			    sub WORD PTR ds:[di], 1
- 0057  C6 07 04			    mov BYTE ptr ds:[bx], 4
- 005A  EB 2B			    jmp next_val_exit
- 005C				teste:
- 005C  3E: 80 7E 01 20		    cmp BYTE ptr ds:[bp + 1], ' '
- 0061  75 08			    jne tests
- 0063  83 04 01			    add WORD PTR ds:[si], 1
- 0066  C6 07 01			    mov BYTE ptr ds:[bx], 1
- 0069  EB 1C			    jmp next_val_exit
- 006B				tests:
- 006B  3E: 80 7E 1E 20		    cmp BYTE ptr ds:[bp + 30], ' '
- 0070  75 08			    jne testw
- 0072  83 05 01			    add WORD PTR ds:[di], 1
- 0075  C6 07 02			    mov BYTE ptr ds:[bx], 2
- 0078  EB 0D			    jmp next_val_exit
- 007A				testw:
- 007A  3E: 80 7E FF 20		    cmp BYTE ptr ds:[bp - 1], ' '
- 007F  75 CC			    jne testn
- 0081  83 2C 01			    sub WORD PTR ds:[si], 1
- 0084  C6 07 03			    mov BYTE ptr ds:[bx], 3
+ 0045				nextval_main:
+ 0045  80 3F 01			    cmp BYTE PTR ds:[bx], 1
+ 0048  74 0F			    je testn
+ 004A  80 3F 02			    cmp BYTE PTR ds:[bx], 2
+ 004D  74 19			    je teste
+ 004F  80 3F 03			    cmp BYTE PTR ds:[bx], 3
+ 0052  74 23			    je tests
+ 0054  80 3F 04			    cmp BYTE PTR ds:[bx], 4
+ 0057  74 2D			    je testw
+ 0059				testn:
+ 0059  3E: 80 7E E2 20		    cmp BYTE ptr ds:[bp - 30], ' '
+ 005E  75 08			    jne teste
+ 0060  83 2D 01			    sub WORD PTR ds:[di], 1
+ 0063  C6 07 04			    mov BYTE ptr ds:[bx], 4
+ 0066  EB 2B			    jmp next_val_exit
+ 0068				teste:
+ 0068  3E: 80 7E 01 20		    cmp BYTE ptr ds:[bp + 1], ' '
+ 006D  75 08			    jne tests
+ 006F  83 04 01			    add WORD PTR ds:[si], 1
+ 0072  C6 07 01			    mov BYTE ptr ds:[bx], 1
+ 0075  EB 1C			    jmp next_val_exit
+ 0077				tests:
+ 0077  3E: 80 7E 1E 20		    cmp BYTE ptr ds:[bp + 30], ' '
+ 007C  75 08			    jne testw
+ 007E  83 05 01			    add WORD PTR ds:[di], 1
+ 0081  C6 07 02			    mov BYTE ptr ds:[bx], 2
+ 0084  EB 0D			    jmp next_val_exit
+ 0086				testw:
+ 0086  3E: 80 7E FF 20		    cmp BYTE ptr ds:[bp - 1], ' '
+ 008B  75 CC			    jne testn
+ 008D  83 2C 01			    sub WORD PTR ds:[si], 1
+ 0090  C6 07 03			    mov BYTE ptr ds:[bx], 3
 
- 0087				next_val_exit:
- 0087  5A			    pop dx
- 0088  59			    pop cx
- 0089  58			    pop ax
- 008A  5D			    pop bp
- 008B  C3			    ret
+ 0093				next_val_exit:
+ 0093  5A			    pop dx
+ 0094  59			    pop cx
+ 0095  58			    pop ax
+ 0096  5D			    pop bp
+ 0097  C3			    ret
 
- 008C				exit:
+ 0098				exit:
 				    end   
-Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:29:38
+Microsoft (R) Macro Assembler Version 6.11		    03/21/21 23:43:49
 nextval.asm						     Symbols 2 - 1
 
 
@@ -125,7 +126,7 @@ Segments and Groups:
 
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 008C	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0098	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -142,14 +143,14 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 calc_offset  . . . . . . . . . .	L Near	 0004	  _TEXT	
-exit . . . . . . . . . . . . . .	L Near	 008C	  _TEXT	
-next_val_exit  . . . . . . . . .	L Near	 0087	  _TEXT	
-nextval_main . . . . . . . . . .	L Near	 0039	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 0098	  _TEXT	
+next_val_exit  . . . . . . . . .	L Near	 0093	  _TEXT	
+nextval_main . . . . . . . . . .	L Near	 0045	  _TEXT	
 nextval  . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
-teste  . . . . . . . . . . . . .	L Near	 005C	  _TEXT	
-testn  . . . . . . . . . . . . .	L Near	 004D	  _TEXT	
-tests  . . . . . . . . . . . . .	L Near	 006B	  _TEXT	
-testw  . . . . . . . . . . . . .	L Near	 007A	  _TEXT	
+teste  . . . . . . . . . . . . .	L Near	 0068	  _TEXT	
+testn  . . . . . . . . . . . . .	L Near	 0059	  _TEXT	
+tests  . . . . . . . . . . . . .	L Near	 0077	  _TEXT	
+testw  . . . . . . . . . . . . .	L Near	 0086	  _TEXT	
 
 	   0 Warnings
-	   1 Errors
+	   0 Errors

@@ -33,17 +33,19 @@ calc_offset:
     xor ax, ax
     xor cx, cx
     xor dx, dx
-    ; mov al, ds:[di] 
-    ; sub al, 1
-    
-    ; mov cl, 30
-    ; mul cl
 
-    ; add al, ds:[si]
-    ; sub al, 1
-    ; adc ah, 0
+    mov al, ds:[di] 
+    sub ax, 1
     
-    ; add bp, ax
+    mov cx, 30
+    mul cx
+
+    mov dl, BYTE PTR ds:[si]
+
+    add ax, dx
+    sub ax, 1
+    
+    add bp, ax
 
     mov dl, ds:[bp]
     mov ah, 02h                 
