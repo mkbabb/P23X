@@ -1,0 +1,93 @@
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 01:35:31
+LINKHLL.ASM						     Page 1 - 1
+
+
+				;-----------------------------------------------------------
+				;
+				; Program: Linkhll
+				;
+				; Function:
+				;
+				; Owner:
+				;
+				; Date:
+				; 11/21/2016   Original Version
+				;
+				;
+				;---------------------------------------
+				         .model    small               ;
+				         .8086                         ;
+				         public    _linkhll            ;
+				;---------------------------------------
+
+				;---------------------------------------
+
+ 0000				         .code
+				;---------------------------------------
+				;
+				; Code Segment
+				;
+				;---------------------------------------
+
+ 0000				_linkhll:
+ 0000  55			    push    bp                  
+ 0001  8B EC			    mov bp, sp               
+ 0003  8B 46 04			    mov ax, [bp+4]           
+ 0006  8B 5E 06			    mov bx, [bp+6]
+ 0009				tmp0:
+ 0009  3B C3			    cmp ax, bx
+ 000B  73 01			    jae  tmp1 
+ 000D  93			    xchg ax, bx
+ 000E				tmp1:
+ 000E  3B 5E 08			    cmp bx, [bp+8]
+ 0011  73 05			    jae tmp2
+ 0013  87 5E 08			    xchg bx, [bp+8]
+ 0016  EB F1			    jmp tmp0
+ 0018				tmp2:
+ 0018  3B 5E 0A			    cmp bx, [bp+10]
+ 001B  73 03			    jae done
+ 001D  8B 5E 0A			    mov bx, [bp+10]
+ 0020				done:
+ 0020  F7 E3			    mul bx
+ 0022  5D			    pop bp
+ 0023  C3			    ret
+				    end
+				;---------------------------------------
+
+ 
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 01:35:31
+LINKHLL.ASM						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0000	  Word	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0024	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+_linkhll . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
+done . . . . . . . . . . . . . .	L Near	 0020	  _TEXT	
+tmp0 . . . . . . . . . . . . . .	L Near	 0009	  _TEXT	
+tmp1 . . . . . . . . . . . . . .	L Near	 000E	  _TEXT	
+tmp2 . . . . . . . . . . . . . .	L Near	 0018	  _TEXT	
+
+	   0 Warnings
+	   0 Errors
