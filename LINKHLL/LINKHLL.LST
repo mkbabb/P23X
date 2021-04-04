@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:01:42
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:08:10
 LINKHLL.asm						     Page 1 - 1
 
 
@@ -9,6 +9,11 @@ LINKHLL.asm						     Page 1 - 1
 				;           and thereupon complete the following task,
 				;           find the subset maxima of cardinality 2,
 				;           and perform a multiplicaiton reduction withal.
+				;           
+				;           For it is linked,
+				;           That is to say,
+				;           Wherefore doth thinked,
+				;           Surely as night cometh day.
 				;
 				; Owner: D.v.P.
 				;
@@ -23,7 +28,7 @@ LINKHLL.asm						     Page 1 - 1
 				;---------------------------------------
  0000				    .code
 				;---------------------------------------
-				; Code Segment
+				; Code Segment; scilicet, the segment wherein code is executed
 				;---------------------------------------
  0000				_linkhll:
  0000  55			    push    bp                          ; save bp.             
@@ -36,16 +41,24 @@ LINKHLL.asm						     Page 1 - 1
  000B  73 01			    jae  cmp1                           ; jmp if so.
  000D  93			    xchg ax, bx                         ; else, exchange.
 				;---------------------------------------
+				; The first compare, wherein a loop is formed;
+				; Compared, intelligibly to the spokes of the wheel,
+				; exaltant in its grand allegory.
+				;---------------------------------------
  000E				cmp1:
  000E  3B 5E 08			    cmp bx, [bp+8]                      ; bx > val 3?
  0011  73 05			    jae cmp2                            ; jmp if so.
  0013  87 5E 08			    xchg bx, [bp+8]                     ; else, exchange, but we can't gurantee that ax was the max val.
  0016  EB F1			    jmp cmp0                            ; so we check again, jmping to cmp0.
 				;---------------------------------------
+				; The second compare; penultima.
+				;---------------------------------------
  0018				cmp2:                   
  0018  3B 5E 0A			    cmp bx, [bp+10]                     ; bx > val 3?
  001B  73 03			    jae done                            ; jmp if so.
  001D  8B 5E 0A			    mov bx, [bp+10]                     ; else, we've already excluded vals 1 and 2, so the only option 4.
+				;---------------------------------------
+				; Finale ultimo: viva allegro con brio con giocoso
 				;---------------------------------------
  0020				done:
  0020  F7 E3			    mul bx                              ; mul is commutative, so we mul bx.
@@ -55,7 +68,7 @@ LINKHLL.asm						     Page 1 - 1
 				;---------------------------------------
 
  
-Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:01:42
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:08:10
 LINKHLL.asm						     Symbols 2 - 1
 
 
