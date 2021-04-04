@@ -1,62 +1,62 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/04/21 01:35:31
-LINKHLL.ASM						     Page 1 - 1
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:01:42
+LINKHLL.asm						     Page 1 - 1
 
 
 				;-----------------------------------------------------------
-				;
 				; Program: Linkhll
 				;
-				; Function:
+				; Function: Function to link a high level language, C, 
+				;           and thereupon complete the following task,
+				;           find the subset maxima of cardinality 2,
+				;           and perform a multiplicaiton reduction withal.
 				;
-				; Owner:
+				; Owner: D.v.P.
 				;
 				; Date:
-				; 11/21/2016   Original Version
-				;
-				;
+				;       11/21/2016   Original Version
 				;---------------------------------------
-				         .model    small               ;
-				         .8086                         ;
-				         public    _linkhll            ;
+				         .model    small               ; small sz.
+				         .8086                         ; 8086 set.
+				         public    _linkhll            ; public funx.
 				;---------------------------------------
 
 				;---------------------------------------
-
- 0000				         .code
+ 0000				    .code
 				;---------------------------------------
-				;
 				; Code Segment
-				;
 				;---------------------------------------
-
  0000				_linkhll:
- 0000  55			    push    bp                  
- 0001  8B EC			    mov bp, sp               
- 0003  8B 46 04			    mov ax, [bp+4]           
- 0006  8B 5E 06			    mov bx, [bp+6]
- 0009				tmp0:
- 0009  3B C3			    cmp ax, bx
- 000B  73 01			    jae  tmp1 
- 000D  93			    xchg ax, bx
- 000E				tmp1:
- 000E  3B 5E 08			    cmp bx, [bp+8]
- 0011  73 05			    jae tmp2
- 0013  87 5E 08			    xchg bx, [bp+8]
- 0016  EB F1			    jmp tmp0
- 0018				tmp2:
- 0018  3B 5E 0A			    cmp bx, [bp+10]
- 001B  73 03			    jae done
- 001D  8B 5E 0A			    mov bx, [bp+10]
+ 0000  55			    push    bp                          ; save bp.             
+ 0001  8B EC			    mov bp, sp                          ; we only care about the sp.
+ 0003  8B 46 04			    mov ax, [bp+4]                      ; set ax to val 1.
+ 0006  8B 5E 06			    mov bx, [bp+6]                      ; set bx to val 2.
+				;---------------------------------------
+ 0009				cmp0:               
+ 0009  3B C3			    cmp ax, bx                          ; ax > bx?
+ 000B  73 01			    jae  cmp1                           ; jmp if so.
+ 000D  93			    xchg ax, bx                         ; else, exchange.
+				;---------------------------------------
+ 000E				cmp1:
+ 000E  3B 5E 08			    cmp bx, [bp+8]                      ; bx > val 3?
+ 0011  73 05			    jae cmp2                            ; jmp if so.
+ 0013  87 5E 08			    xchg bx, [bp+8]                     ; else, exchange, but we can't gurantee that ax was the max val.
+ 0016  EB F1			    jmp cmp0                            ; so we check again, jmping to cmp0.
+				;---------------------------------------
+ 0018				cmp2:                   
+ 0018  3B 5E 0A			    cmp bx, [bp+10]                     ; bx > val 3?
+ 001B  73 03			    jae done                            ; jmp if so.
+ 001D  8B 5E 0A			    mov bx, [bp+10]                     ; else, we've already excluded vals 1 and 2, so the only option 4.
+				;---------------------------------------
  0020				done:
- 0020  F7 E3			    mul bx
- 0022  5D			    pop bp
- 0023  C3			    ret
-				    end
+ 0020  F7 E3			    mul bx                              ; mul is commutative, so we mul bx.
+ 0022  5D			    pop bp                              ; restore bp.
+ 0023  C3			    ret                                 ; the ret.
+				    end                                 ; fin.
 				;---------------------------------------
 
  
-Microsoft (R) Macro Assembler Version 6.11		    04/04/21 01:35:31
-LINKHLL.ASM						     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 6.11		    04/04/21 02:01:42
+LINKHLL.asm						     Symbols 2 - 1
 
 
 
@@ -84,10 +84,10 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 _linkhll . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
+cmp0 . . . . . . . . . . . . . .	L Near	 0009	  _TEXT	
+cmp1 . . . . . . . . . . . . . .	L Near	 000E	  _TEXT	
+cmp2 . . . . . . . . . . . . . .	L Near	 0018	  _TEXT	
 done . . . . . . . . . . . . . .	L Near	 0020	  _TEXT	
-tmp0 . . . . . . . . . . . . . .	L Near	 0009	  _TEXT	
-tmp1 . . . . . . . . . . . . . .	L Near	 000E	  _TEXT	
-tmp2 . . . . . . . . . . . . . .	L Near	 0018	  _TEXT	
 
 	   0 Warnings
 	   0 Errors
