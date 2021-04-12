@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/12/21 14:19:31
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:16:29
 rlc.asm							     Page 1 - 1
 
 
@@ -27,7 +27,10 @@ rlc.asm							     Page 1 - 1
         00
        ]
  0002 50			    pels_left   db 80
- 0003 20			    cur         db 32
+
+ 0003 DB			    black db 219
+ 0004 20			    cur db 32
+
 				;---------------------------------------
  0000				         .code                         ;start the code segnment
 				;---------------------------------------
@@ -41,82 +44,73 @@ rlc.asm							     Page 1 - 1
  0004  57			    push      di                  ;save 'C' register
  0005  8B 76 04			    mov       si, [bp + 4]           ;si points to the input compressed data
  0008  8B 7E 06			    mov       di, [bp + 6]           ;di points to the empty output buffer
-				;---------------------------------------
- 000B				main_body:
- 000B  8A 04			    mov al, [si] ; code
- 000D  46			    inc si
-
- 000E  3C 00			    cmp al, 0
- 0010  74 64			    je exit
-
- 0012  A2 0000 R		    mov [run], al
- 0015  A2 0001 R		    mov [run + 1], al
-
- 0018  B1 04			    mov cl, 4
- 001A  D2 2E 0000 R		    shr [run], cl
 				    
- 001E  80 26 0001 R 0F		    and [run + 1], 0fh
+ 000B  8C D8			    mov ax, ds
+ 000D  8E C0			    mov es, ax
+ 000F  B4 20			    mov ah, 32
+				;---------------------------------------
+ 0011				main_body:
+ 0011  AC			    lodsb
 
- 0023  33 DB			    xor bx, bx ; i
- 0025  33 C9			    xor cx, cx ; len
+ 0012  3C 00			    cmp al, 0
+ 0014  74 4F			    je exit
 
- 0027				for_loop:
- 0027  83 FB 02			    cmp bx, 2
- 002A  73 DF			    jae main_body
+ 0016  A2 0000 R		    mov [run], al
+ 0019  A2 0001 R		    mov [run + 1], al
 
- 002C				pels_left_test:
- 002C  80 3E 0002 R 00		    cmp [pels_left], 0
- 0031  75 0A			    jne run_test
+ 001C  B1 04			    mov cl, 4
+ 001E  D2 2E 0000 R		    shr [run], cl
+				    
+ 0022  80 26 0001 R 0F		    and [run + 1], 0fh
 
- 0033  C6 06 0002 R 50		    mov [pels_left], 80
- 0038  C6 06 0003 R 20		    mov [cur], 32
+ 0027  33 DB			    xor bx, bx ; i
+ 0029  33 C9			    xor cx, cx ; len
 
- 003D				run_test:
- 003D  80 BF 0000 R 0F		    cmp [run + bx], 15
- 0042  74 06			    je run_test_if
+ 002B  E8 0006			    call for_looper
+ 002E  43			    inc bx
+ 002F  E8 0002			    call for_looper
 
- 0044  8A 8F 0000 R		    mov cl, [run + bx]
- 0048  EB 04			    jmp while_loop_test
- 004A				run_test_if:
- 004A  8A 0E 0002 R		    mov cl, [pels_left]
+ 0032  EB DD			    jmp main_body
+ 0034				for_looper:
+ 0034  80 3E 0002 R 00		    cmp [pels_left], 0
+ 0039  75 0C			    jne run_test
 
- 004E				while_loop_test:
- 004E  8A 16 0003 R		    mov dl, [cur]
- 0052  80 F9 00			    cmp cl, 0
- 0055  74 09			    je cur_test
- 0057				while_loop: 
- 0057  88 15			    mov [di], dl
- 0059  47			    inc di
+ 003B  C6 06 0002 R 50		    mov [pels_left], 80
+ 0040  B4 20			    mov ah, 32
+ 0042  C6 06 0003 R DB		    mov [black], 219
+ 0047				run_test:
+ 0047  80 BF 0000 R 0F		    cmp [run + bx], 15
+ 004C  74 06			    je run_test_if
 
- 005A  FE 0E 0002 R		    dec [pels_left]
- 005E  E2 F7			    loop while_loop
+ 004E  8A 8F 0000 R		    mov cl, [run + bx]
+ 0052  EB 04			    jmp while_loop_test
+ 0054				run_test_if:
+ 0054  8A 0E 0002 R		    mov cl, [pels_left]
+
+ 0058				while_loop_test:
+ 0058  8A C4			    mov al, ah
+ 005A  28 0E 0002 R		    sub [pels_left], cl
+
+ 005E				while_loop: 
+ 005E  F3/ AA			    rep stosb
 
  0060				cur_test:
- 0060  43			    inc bx    
-
- 0061  80 3E 0003 R 20		    cmp cur, 32
- 0066  74 07			    je cur_set_black
-
- 0068				cur_set_white:
- 0068  C6 06 0003 R 20		    mov cur, 32
- 006D  EB B8			    jmp for_loop
- 006F				cur_set_black:
- 006F  C6 06 0003 R DB		    mov cur, 219
- 0074  EB B1			    jmp for_loop
+ 0060  86 26 0003 R		    xchg ah, [black]
+ 0064  C3			    ret
 
 				;---------------------------------------
 				; Restore registers and return
 				;---------------------------------------
- 0076				exit:                                  ;
- 0076  5F			    pop       di                  ;restore 'C' register
- 0077  5E			    pop       si                  ;restore 'C' register
- 0078  5D			    pop       bp                  ;restore 'C' register
- 0079  C3			    ret                           ;return
+ 0065				exit:                                  ;
+ 0065  5F			    pop       di                  ;restore 'C' register
+ 0066  5E			    pop       si                  ;restore 'C' register
+ 0067  5D			    pop       bp                  ;restore 'C' register
+ 0068  C3			    ret                           ;return
 				;---------------------------------------
 				    end
 
  
-Microsoft (R) Macro Assembler Version 6.11		    04/12/21 14:19:31
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:16:29
 rlc.asm							     Symbols 2 - 1
 
 
@@ -127,8 +121,8 @@ Segments and Groups:
                 N a m e                 Size     Length   Align   Combine Class
 
 DGROUP . . . . . . . . . . . . .	GROUP
-_DATA  . . . . . . . . . . . . .	16 Bit	 0004	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 007A	  Word	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	16 Bit	 0005	  Word	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0069	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -145,20 +139,18 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 _rlc . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
-cur_set_black  . . . . . . . . .	L Near	 006F	  _TEXT	
-cur_set_white  . . . . . . . . .	L Near	 0068	  _TEXT	
+black  . . . . . . . . . . . . .	Byte	 0003	  _DATA	
 cur_test . . . . . . . . . . . .	L Near	 0060	  _TEXT	
-cur  . . . . . . . . . . . . . .	Byte	 0003	  _DATA	
-exit . . . . . . . . . . . . . .	L Near	 0076	  _TEXT	
-for_loop . . . . . . . . . . . .	L Near	 0027	  _TEXT	
-main_body  . . . . . . . . . . .	L Near	 000B	  _TEXT	
-pels_left_test . . . . . . . . .	L Near	 002C	  _TEXT	
+cur  . . . . . . . . . . . . . .	Byte	 0004	  _DATA	
+exit . . . . . . . . . . . . . .	L Near	 0065	  _TEXT	
+for_looper . . . . . . . . . . .	L Near	 0034	  _TEXT	
+main_body  . . . . . . . . . . .	L Near	 0011	  _TEXT	
 pels_left  . . . . . . . . . . .	Byte	 0002	  _DATA	
-run_test_if  . . . . . . . . . .	L Near	 004A	  _TEXT	
-run_test . . . . . . . . . . . .	L Near	 003D	  _TEXT	
+run_test_if  . . . . . . . . . .	L Near	 0054	  _TEXT	
+run_test . . . . . . . . . . . .	L Near	 0047	  _TEXT	
 run  . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
-while_loop_test  . . . . . . . .	L Near	 004E	  _TEXT	
-while_loop . . . . . . . . . . .	L Near	 0057	  _TEXT	
+while_loop_test  . . . . . . . .	L Near	 0058	  _TEXT	
+while_loop . . . . . . . . . . .	L Near	 005E	  _TEXT	
 
 	   0 Warnings
 	   0 Errors

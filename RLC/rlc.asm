@@ -21,7 +21,10 @@
 ;---------------------------------------
     run         db 2 dup (?)         
     pels_left   db 80
-    cur         db 32
+
+    black db 219
+    cur db 32
+
 ;---------------------------------------
          .code                         ;start the code segnment
 ;---------------------------------------
@@ -35,10 +38,13 @@ _rlc:                                  ;
     push      di                  ;save 'C' register
     mov       si, [bp + 4]           ;si points to the input compressed data
     mov       di, [bp + 6]           ;di points to the empty output buffer
+    
+    mov ax, ds
+    mov es, ax
+    mov ah, 32
 ;---------------------------------------
 main_body:
-    mov al, [si] ; code
-    inc si
+    lodsb
 
     cmp al, 0
     je exit
@@ -54,17 +60,18 @@ main_body:
     xor bx, bx ; i
     xor cx, cx ; len
 
-for_loop:
-    cmp bx, 2
-    jae main_body
+    call for_looper
+    inc bx
+    call for_looper
 
-pels_left_test:
+    jmp main_body
+for_looper:
     cmp [pels_left], 0
     jne run_test
 
     mov [pels_left], 80
-    mov [cur], 32
-
+    mov ah, 32
+    mov [black], 219
 run_test:
     cmp [run + bx], 15
     je run_test_if
@@ -75,28 +82,15 @@ run_test_if:
     mov cl, [pels_left]
 
 while_loop_test:
-    mov dl, [cur]
-    cmp cl, 0
-    je cur_test
-while_loop: 
-    mov [di], dl
-    inc di
+    mov al, ah
+    sub [pels_left], cl
 
-    dec [pels_left]
-    loop while_loop
+while_loop: 
+    rep stosb
 
 cur_test:
-    inc bx    
-
-    cmp cur, 32
-    je cur_set_black
-
-cur_set_white:
-    mov cur, 32
-    jmp for_loop
-cur_set_black:
-    mov cur, 219
-    jmp for_loop
+    xchg ah, [black]
+    ret
 
 ;---------------------------------------
 ; Restore registers and return
