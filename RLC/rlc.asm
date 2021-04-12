@@ -19,8 +19,9 @@
 ;---------------------------------------
          .data                         ;start the data segment
 ;---------------------------------------
-    run         db 2 dup (?)           
+    run         db 2 dup (?)         
     pels_left   db 80
+    cur         db 32
 ;---------------------------------------
          .code                         ;start the code segnment
 ;---------------------------------------
@@ -34,60 +35,69 @@ _rlc:                                  ;
     push      di                  ;save 'C' register
     mov       si, [bp + 4]           ;si points to the input compressed data
     mov       di, [bp + 6]           ;di points to the empty output buffer
-
-cur_set:
-    mov dl, 32
 ;---------------------------------------
 main_body:
-    mov al, byte ptr [si]; al = code
+    mov al, [si] ; code
     inc si
 
     cmp al, 0
     je exit
 
-    mov ah, al
+    mov [run], al
+    mov [run + 1], al
 
     mov cl, 4
-    shr al, cl
+    shr [run], cl
     
-    and ah, 0fh
+    and [run + 1], 0fh
 
-    mov [run], al
-    mov [run + 1], ah
-
-    xor bx, bx ; i variable
-    xor cx, cx ; len variable
+    xor bx, bx ; i
+    xor cx, cx ; len
 
 for_loop:
     cmp bx, 2
-    jge main_body
-    inc bx
+    jae main_body
 
 pels_left_test:
     cmp [pels_left], 0
     jne run_test
 
     mov [pels_left], 80
-    mov dl, 32
+    mov [cur], 32
 
 run_test:
     cmp [run + bx], 15
     je run_test_if
+
     mov cl, [run + bx]
-    jmp while_loop
+    jmp while_loop_test
 run_test_if:
     mov cl, [pels_left]
+
+while_loop_test:
+    mov dl, [cur]
+    cmp cl, 0
+    je cur_test
 while_loop: 
-    mov byte ptr [di], dl
+    mov [di], dl
     inc di
+
     dec [pels_left]
     loop while_loop
 
 cur_test:
-    cmp dl, 32
-    jne cur_set
-    mov dl, 219
-    jmp main_body
+    inc bx    
+
+    cmp cur, 32
+    je cur_set_black
+
+cur_set_white:
+    mov cur, 32
+    jmp for_loop
+cur_set_black:
+    mov cur, 219
+    jmp for_loop
+
 ;---------------------------------------
 ; Restore registers and return
 ;---------------------------------------

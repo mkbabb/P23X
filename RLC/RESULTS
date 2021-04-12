@@ -1,3 +1,9 @@
+Test date: 04/12/21  14:19:49 
+The number of times you used the grading program is 5 
+In the business world, your customer replaces the grading program. 
+The goal is a correct program with the fewest grading attempts. 
+RLC Grading System Version 4.0
+Student: St#1=Babb                 St#2t=Cheerla              Type=Team                
 Grading and testing history log
        User Test.    Date: 04/12/21  01:44:44  1            Display      
        User Test.    Date: 04/12/21  01:44:58  2            Display      
@@ -40,3 +46,5 @@ Grading and testing history log
    *** Grading Run.  Date: 04/12/21  14:12:48 
        User Test.    Date: 04/12/21  14:19:47  1            Display      
    *** Grading Run.  Date: 04/12/21  14:19:49 
+
+Testing 1 dimension compression
