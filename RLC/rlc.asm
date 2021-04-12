@@ -34,9 +34,12 @@ _rlc:                                  ;
     push      di                  ;save 'C' register
     mov       si, [bp + 4]           ;si points to the input compressed data
     mov       di, [bp + 6]           ;di points to the empty output buffer
+
+cur_set:
+    mov dl, 32
 ;---------------------------------------
 main_body:
-    mov al, [si] ; al = code
+    mov al, byte ptr [si]; al = code
     inc si
 
     cmp al, 0
@@ -52,8 +55,6 @@ main_body:
     mov [run], al
     mov [run + 1], ah
 
-    mov al, 32
-
     xor bx, bx ; i variable
     xor cx, cx ; len variable
 
@@ -67,7 +68,7 @@ pels_left_test:
     jne run_test
 
     mov [pels_left], 80
-    mov al, 32
+    mov dl, 32
 
 run_test:
     cmp [run + bx], 15
@@ -77,15 +78,15 @@ run_test:
 run_test_if:
     mov cl, [pels_left]
 while_loop: 
-    mov [di], al
+    mov byte ptr [di], dl
     inc di
     dec [pels_left]
     loop while_loop
 
 cur_test:
-    cmp al, 32
-    jne main_body
-    mov al, 219
+    cmp dl, 32
+    jne cur_set
+    mov dl, 219
     jmp main_body
 ;---------------------------------------
 ; Restore registers and return
