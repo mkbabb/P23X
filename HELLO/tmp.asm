@@ -2,32 +2,15 @@
          .8086                         ;only allow 8086 instructions
          .stack     256   
 .data
-p0 dw 7fffh
+p0 db 0CCh,0FDh,0BAh,001h,002h,003h,004h,005h,006h,007h,008h,009h,00Ah,00Bh,00Ch,00Dh
 
 .code
 
-; subr:   push  ax                                              
-;         push  si                                              
-;         mov   ax,[si]                                         
-;         mov   [si],ah                                         
-;         mov   [si+1],al  
-
-;         mov bx, [WORD PTR si]
-
-;         pop   si                                              
-;         pop   ax                                              
-;         ret  
-
-subr:       mov  bx,2                                             
-            mov  cx,1                                             
-            mov  ax,[si]                                          
-            mul  bx                                               
-            jc   subret                                           
-            div  cx                                               
-subret:     ret    
-
 tmp:
-    call subr
+    mov ax, 5005h
+    mov bx, 0010h
+    div bx
+
 done:
     mov       ax,4c00h            ;set dos code to terminate program
     int       21h  

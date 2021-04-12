@@ -1,0 +1,154 @@
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 01:40:18
+rlc.asm							     Page 1 - 1
+
+
+				;---------------------------------------------------------------------
+				;  Program:      Run Length Coding
+				;
+				;  Function:     Decompresses 1 dimensional run lengths
+				;                This subroutine links with a C main program
+				;
+				;                Add your additional functional comments
+				;
+				;  Owner:
+				;
+				;  Changes:
+				;  Date          Reason
+				;  ----          ------
+				;  05/16/2017    Original version ... coded to spec design
+				;---------------------------------------------------------------------
+				         .model    small
+				         .8086
+				         public    _rlc
+				;---------------------------------------
+ 0000				         .data                         ;start the data segment
+				;---------------------------------------
+ 0000  0002 [			    run db        2 dup (?)           
+        00
+       ]
+ 0002 0000			    cur dw        ?
+ 0004 00			    pels_left   db ?
+ 0005 04			    shift_amount db 4
+				;---------------------------------------
+ 0000				         .code                         ;start the code segnment
+				;---------------------------------------
+				; Save the registers ... 'C' requires (bp,si,di)
+				; Access the input and output lists
+				;---------------------------------------
+ 0000				_rlc:                                  ;
+ 0000  55			    push      bp                  ;save 'C' register
+ 0001  8B EC			    mov       bp,sp               ;set bp to point to stack
+ 0003  56			    push      si                  ;save 'C' register
+ 0004  57			    push      di                  ;save 'C' register
+ 0005  8B 76 04			    mov       si, [bp + 4]           ;si points to the input compressed data
+ 0008  8B 7E 06			    mov       di, [bp + 6]           ;di points to the empty output buffer
+				;---------------------------------------
+ 000B  C6 06 0004 R 50		    mov [pels_left], 80
+ 0010				main_body:
+ 0010  8A 04			    mov al, [si] ; al = code
+ 0012  46			    inc si
+
+ 0013  3C 00			    cmp al, 0
+ 0015  74 4C			    je exit
+
+ 0017  8A E0			    mov ah, al
+
+ 0019  B1 04			    mov cl, 4
+ 001B  D2 E8			    shr al, cl
+				    
+ 001D  80 E4 0F			    and ah, 0fh
+
+ 0020  A2 0000 R		    mov [run], al
+ 0023  88 26 0001 R		    mov [run + 1], ah
+
+ 0027  B0 20			    mov al, 32
+
+ 0029  33 DB			    xor bx, bx ; i variable
+ 002B  33 C9			    xor cx, cx ; len variable
+
+ 002D				for_loop:
+ 002D  83 FB 02			    cmp bx, 2
+ 0030  7D DE			    jge main_body
+ 0032  43			    inc bx
+
+ 0033				pels_left_test:
+ 0033  80 3E 0004 R 00		    cmp [pels_left], 0
+ 0038  75 07			    jne run_test
+
+ 003A  C6 06 0004 R 50		    mov [pels_left], 80
+ 003F  B0 20			    mov al, 32
+
+ 0041				run_test:
+ 0041  80 BF 0000 R 0F		    cmp [run + bx], 15
+ 0046  74 06			    je run_test_if
+ 0048  8A 8F 0000 R		    mov cl, [run + bx]
+ 004C  EB 04			    jmp while_loop
+ 004E				run_test_if:
+ 004E  8A 0E 0004 R		    mov cl, [pels_left]
+ 0052				while_loop: 
+ 0052  88 05			    mov [di], al
+ 0054  47			    inc di
+ 0055  FE 0E 0004 R		    dec [pels_left]
+ 0059  E2 F7			    loop while_loop
+
+ 005B				cur_test:
+ 005B  3C 20			    cmp al, 32
+ 005D  75 B1			    jne main_body
+ 005F  B0 DB			    mov al, 219
+ 0061  EB AD			    jmp main_body
+				;---------------------------------------
+				; Restore registers and return
+				;---------------------------------------
+ 0063				exit:                                  ;
+ 0063  5F			    pop       di                  ;restore 'C' register
+ 0064  5E			    pop       si                  ;restore 'C' register
+ 0065  5D			    pop       bp                  ;restore 'C' register
+ 0066  C3			    ret                           ;return
+				;---------------------------------------
+				    end
+
+ 
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 01:40:18
+rlc.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0006	  Word	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0067	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+_rlc . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
+cur_test . . . . . . . . . . . .	L Near	 005B	  _TEXT	
+cur  . . . . . . . . . . . . . .	Word	 0002	  _DATA	
+exit . . . . . . . . . . . . . .	L Near	 0063	  _TEXT	
+for_loop . . . . . . . . . . . .	L Near	 002D	  _TEXT	
+main_body  . . . . . . . . . . .	L Near	 0010	  _TEXT	
+pels_left_test . . . . . . . . .	L Near	 0033	  _TEXT	
+pels_left  . . . . . . . . . . .	Byte	 0004	  _DATA	
+run_test_if  . . . . . . . . . .	L Near	 004E	  _TEXT	
+run_test . . . . . . . . . . . .	L Near	 0041	  _TEXT	
+run  . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
+shift_amount . . . . . . . . . .	Byte	 0005	  _DATA	
+while_loop . . . . . . . . . . .	L Near	 0052	  _TEXT	
+
+	   0 Warnings
+	   0 Errors
