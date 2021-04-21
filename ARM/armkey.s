@@ -5,79 +5,79 @@
          .equ SWI_RdStr, 0x6a     	
          .equ SWI_Exit,  0x11     	
 @----------------------------------
-         .global   _start
+         .global   _load
          .text
 
-_start:
+_load:
 @----------------------------------
-         ldr  r0, =InFileName     	
-         ldr  r1, =0              	
-         swi  SWI_Open            	
-         ldr  r1, =InFileHandle   	
-         str  r0, [r1]            	
-@----------------------------------
-         ldr  r0, =OutFileName    	
+         ldr  r0, =OutputFileName    	
          ldr  r1, =1              	
          swi  SWI_Open            	
-         ldr  r1, =OutFileHandle  	
+         ldr  r1, =OutputFileHandle  	
          str  r0, [r1]            	
 @----------------------------------
-_process:
-         ldr  r0, =InFileHandle   	
+         ldr  r0, =InputFileName     	
+         ldr  r1, =0              	
+         swi  SWI_Open            	
+         ldr  r1, =InputFileHandle   	
+         str  r0, [r1]            	
+@----------------------------------
+_main:
+         ldr  r0, =InputFileHandle   	
          ldr  r0, [r0]            	
          ldr  r1, =InString       	
          ldr  r2, =80           	
          swi  SWI_RdStr           	
-		 cmp r0, #0x00				
+		 cmp r0, #0				
 		 beq _exit					
 @----------------------------------
          ldr  r0, =InString       	
          ldr  r1, =OutString      	
-_loop:                            	
+_my_loop:                            	
         ldrb r2, [r0], #1        	
-        cmp r2, #0x00				
-        beq _finloop				
+        cmp r2, #0				
+        beq _write_char_final				
 
         cmp r2, #' '
-        beq _store
+        beq _write_char
 
         and r2, r2, #0xdf               ; bit-twiddling caps trick.
         sub r3, r2, #'A'                 ; in the range 'twixt [A, Z]?
         cmp r3, #25                     ; does the cmp above the above.
-        bls _store 
+        bls _write_char 
 
-        b _loop                ; jmp if so.	 		
+        b _my_loop                ; jmp if so.	 		
 				
-_store:								
+_write_char:								
         strb r2, [r1], #1        	
-		b _loop						
-_finloop: 							
+		b _my_loop						
+_write_char_final: 							
 		strb r2, [r1]				
 @----------------------------------
 _print:
-         ldr  r0, =OutFileHandle  	
+         ldr  r0, =OutputFileHandle  	
          ldr  r0, [r0]            	
          ldr  r1, =OutString      	
          swi  SWI_PrStr           	
          ldr  r1, =CRLF           	
          swi  SWI_PrStr           	
-		 b _process					
+		 b _main					
 @----------------------------------
 _exit:                            	
          swi  SWI_Exit            	
 @----------------------------------
          .data
 @----------------------------------
-InFileHandle:  .skip 4            	
-OutFileHandle: .skip 4            	
+InputFileHandle:  .skip 4            	
+OutputFileHandle: .skip 4            	
 									
-InFileName:    .asciz "KEY.IN"   	
+InputFileName:    .asciz "KEY.IN"   	
+OutputFileName:   .asciz "KEY.OUT"  	
 									
 InString:      .skip 80          	
 OutString:     .skip 80          	
 									
 CRLF:          .byte 13, 10, 0    	
 									
-OutFileName:   .asciz "KEY.OUT"  	
 @----------------------------------
          .end
