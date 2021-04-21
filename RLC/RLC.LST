@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:16:29
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:53:37
 rlc.asm							     Page 1 - 1
 
 
@@ -8,14 +8,27 @@ rlc.asm							     Page 1 - 1
 				;  Function:     Decompresses 1 dimensional run lengths
 				;                This subroutine links with a C main program
 				;
-				;                Add your additional functional comments
+				;                This subroutine performs the functions necessary to
+				;                decompress the exisiting RLC representation.
+				;                
+				;                INPUT:
+				;                -   a pointer to compressed data containg contating 
+				;                    strings of runs and feature
+				;                -   a pointer to a buffer to store decompressed data
+				;                
+				;                OUTPUT:
+				;                -   decompressed data in the input buffer pointer
+				;                -   restored C registers 
 				;
-				;  Owner:
+				;  Owner:        mbabb, scheerl
 				;
-				;  Changes:
+				;  Changes:      Added all data code, last 2 lines of _rlc and 
+				;                everything else except exit
+				;
 				;  Date          Reason
 				;  ----          ------
 				;  05/16/2017    Original version ... coded to spec design
+				;  03/12/2021    Added program functionality
 				;---------------------------------------------------------------------
 				         .model    small
 				         .8086
@@ -26,91 +39,120 @@ rlc.asm							     Page 1 - 1
  0000  0002 [			    run         db 2 dup (?)         
         00
        ]
- 0002 50			    pels_left   db 80
-
- 0003 DB			    black db 219
- 0004 20			    cur db 32
-
+ 0002 50			    pels_left   db 80                  ;set pels left to 80
+ 0003 DB			    black db 219                       ;set black to 219
+ 0004 20			    cur db 32                          ;set white to 32
 				;---------------------------------------
  0000				         .code                         ;start the code segnment
 				;---------------------------------------
 				; Save the registers ... 'C' requires (bp,si,di)
 				; Access the input and output lists
+				; pels_left = 80;
+				; cur = wh;
 				;---------------------------------------
- 0000				_rlc:                                  ;
- 0000  55			    push      bp                  ;save 'C' register
- 0001  8B EC			    mov       bp,sp               ;set bp to point to stack
- 0003  56			    push      si                  ;save 'C' register
- 0004  57			    push      di                  ;save 'C' register
- 0005  8B 76 04			    mov       si, [bp + 4]           ;si points to the input compressed data
- 0008  8B 7E 06			    mov       di, [bp + 6]           ;di points to the empty output buffer
-				    
- 000B  8C D8			    mov ax, ds
- 000D  8E C0			    mov es, ax
- 000F  B4 20			    mov ah, 32
+ 0000				_rlc:                                  
+ 0000  55			    push      bp                       ;save 'C' register
+ 0001  8B EC			    mov       bp,sp                    ;set bp to point to stack
+ 0003  56			    push      si                       ;save 'C' register
+ 0004  57			    push      di                       ;save 'C' register
+ 0005  8B 76 04			    mov       si, [bp + 4]             ;si points to the input compressed data
+ 0008  8B 7E 06			    mov       di, [bp + 6]             ;di points to the empty output buffer
+ 000B  8C D8			    mov ax, ds                         ;move ds to ax
+ 000D  8E C0			    mov es, ax                         ;move ax into extra segment
 				;---------------------------------------
- 0011				main_body:
- 0011  AC			    lodsb
-
- 0012  3C 00			    cmp al, 0
- 0014  74 4F			    je exit
-
- 0016  A2 0000 R		    mov [run], al
- 0019  A2 0001 R		    mov [run + 1], al
-
- 001C  B1 04			    mov cl, 4
- 001E  D2 2E 0000 R		    shr [run], cl
-				    
- 0022  80 26 0001 R 0F		    and [run + 1], 0fh
-
- 0027  33 DB			    xor bx, bx ; i
- 0029  33 C9			    xor cx, cx ; len
-
- 002B  E8 0006			    call for_looper
- 002E  43			    inc bx
- 002F  E8 0002			    call for_looper
-
- 0032  EB DD			    jmp main_body
- 0034				for_looper:
- 0034  80 3E 0002 R 00		    cmp [pels_left], 0
- 0039  75 0C			    jne run_test
-
- 003B  C6 06 0002 R 50		    mov [pels_left], 80
- 0040  B4 20			    mov ah, 32
- 0042  C6 06 0003 R DB		    mov [black], 219
- 0047				run_test:
- 0047  80 BF 0000 R 0F		    cmp [run + bx], 15
- 004C  74 06			    je run_test_if
-
- 004E  8A 8F 0000 R		    mov cl, [run + bx]
- 0052  EB 04			    jmp while_loop_test
- 0054				run_test_if:
- 0054  8A 0E 0002 R		    mov cl, [pels_left]
-
- 0058				while_loop_test:
- 0058  8A C4			    mov al, ah
- 005A  28 0E 0002 R		    sub [pels_left], cl
-
- 005E				while_loop: 
- 005E  F3/ AA			    rep stosb
-
- 0060				cur_test:
- 0060  86 26 0003 R		    xchg ah, [black]
- 0064  C3			    ret
-
+				; the main loop of the subroutine
+				; while(1) {
+				; code = *comp;
+				; comp++;
+				; if ( code == 0 ) return(0);
+				; run[0] = (unsigned char)(code >> 4)
+				; run[1] = (unsigned char)(code << 4)
+				;---------------------------------------
+ 000F				main_body:
+ 000F  AC			    lodsb                              ;mov al, increment si
+ 0010  3C 00			    cmp al, 0                          ;compare al to 0
+ 0012  74 53			    je exit                            ;if 0 jump to exit loop
+ 0014  A2 0000 R		    mov [run], al                      ;move al into run
+ 0017  A2 0001 R		    mov [run + 1], al                  ;move al into run + 1
+ 001A  B1 04			    mov cl, 4                          ;move cl into 4
+ 001C  D2 2E 0000 R		    shr [run], cl                      ;shift right run by 4
+ 0020  80 26 0001 R 0F		    and [run + 1], 0fh                 ;clear high order bits of run + 1
+ 0025  33 DB			    xor bx, bx                         ;set bx to 0
+ 0027  33 C9			    xor cx, cx                         ;set cx to 0
+ 0029  A0 0004 R		    mov al, [cur]                      ;move cur to al
+ 002C  E8 0009			    call for_looper                    ;call for looper subroutine
+ 002F  43			    inc bx                             ;increment bx by 1
+ 0030  E8 0005			    call for_looper                    ;call for looper subroutine again
+ 0033  A2 0004 R		    mov [cur], al                      ;move al into cur
+ 0036  EB D7			    jmp main_body                      ;start main loop again
+				;---------------------------------------
+				; for loop sub routine
+				; for ( i = 0; i < 2; i++ )
+				;---------------------------------------
+ 0038				for_looper:
+ 0038  80 3E 0002 R 00		    cmp [pels_left], 0                 ;compare pels left to 0
+ 003D  75 0C			    jne run_test                       ;if not 0 jump to run test
+ 003F  C6 06 0002 R 50		    mov [pels_left], 80                ;move 80 into pels left
+ 0044  B0 20			    mov al, 32                         ;move 32 into al
+ 0046  C6 06 0003 R DB		    mov [black], 219                   ;move 219 into black
+				;---------------------------------------
+				; run test loop to do if else statements
+				; from c psuedo code
+				; if i = 0   dl = [run+0]
+				; if i = 1   dl = [run+1]
+				;---------------------------------------
+ 004B				run_test:
+ 004B  80 BF 0000 R 0F		    cmp [run + bx], 15                 ;compare to see if run[bx] is 15
+ 0050  74 06			    je run_test_if                     ;if so jump to run_test_if
+ 0052  8A 8F 0000 R		    mov cl, [run + bx]                 ;move run[bx] to cl
+ 0056  EB 04			    jmp while_loop_test                ;jump to while_loop_test
+				;---------------------------------------
+				; move pels left into cl
+				; if ( pels_left == 0 ) {
+				; pels_left = 80;
+				; cur = wh;
+				; }
+				;---------------------------------------
+ 0058				run_test_if:
+ 0058  8A 0E 0002 R		    mov cl, [pels_left]                ;move pels left into cl
+				;---------------------------------------
+				; decrement pels left by cl
+				; if ( run[i] == 15) len = pels_left;
+				; else len = run[i];
+				;---------------------------------------
+ 005C				while_loop_test:
+ 005C  28 0E 0002 R		    sub [pels_left], cl                ;decrement pels left by cl
+				;---------------------------------------
+				; do inner while loop
+				; while ( len > 0 )
+				; *dcomp = cur;
+				; dcomp ++;
+				; len--;
+				; pels_left--;
+				;---------------------------------------
+ 0060				while_loop: 
+ 0060  F3/ AA			    rep stosb                          ;increment curr pointer, decrement len and pels left all by 1
+				;---------------------------------------
+				; cur test loop exchange black into al
+				; if ( cur == wh ) cur = bl;
+				; else cur = wh;
+				;---------------------------------------
+ 0062				cur_test:
+ 0062  86 06 0003 R		    xchg al, [black]                   ;swap black into al
+ 0066  C3			    ret                                ;return
 				;---------------------------------------
 				; Restore registers and return
 				;---------------------------------------
- 0065				exit:                                  ;
- 0065  5F			    pop       di                  ;restore 'C' register
- 0066  5E			    pop       si                  ;restore 'C' register
- 0067  5D			    pop       bp                  ;restore 'C' register
- 0068  C3			    ret                           ;return
+ 0067				exit:                             
+ 0067  5F			    pop       di                       ;restore 'C' register
+ 0068  5E			    pop       si                       ;restore 'C' register
+ 0069  5D			    pop       bp                       ;restore 'C' register
+ 006A  C3			    ret                                ;return
 				;---------------------------------------
-				    end
+				    end                           ;end
 
  
-Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:16:29
+Microsoft (R) Macro Assembler Version 6.11		    04/12/21 16:53:37
 rlc.asm							     Symbols 2 - 1
 
 
@@ -122,7 +164,7 @@ Segments and Groups:
 
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0005	  Word	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	16 Bit	 0069	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 006B	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -140,17 +182,17 @@ Symbols:
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
 _rlc . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	Public
 black  . . . . . . . . . . . . .	Byte	 0003	  _DATA	
-cur_test . . . . . . . . . . . .	L Near	 0060	  _TEXT	
+cur_test . . . . . . . . . . . .	L Near	 0062	  _TEXT	
 cur  . . . . . . . . . . . . . .	Byte	 0004	  _DATA	
-exit . . . . . . . . . . . . . .	L Near	 0065	  _TEXT	
-for_looper . . . . . . . . . . .	L Near	 0034	  _TEXT	
-main_body  . . . . . . . . . . .	L Near	 0011	  _TEXT	
+exit . . . . . . . . . . . . . .	L Near	 0067	  _TEXT	
+for_looper . . . . . . . . . . .	L Near	 0038	  _TEXT	
+main_body  . . . . . . . . . . .	L Near	 000F	  _TEXT	
 pels_left  . . . . . . . . . . .	Byte	 0002	  _DATA	
-run_test_if  . . . . . . . . . .	L Near	 0054	  _TEXT	
-run_test . . . . . . . . . . . .	L Near	 0047	  _TEXT	
+run_test_if  . . . . . . . . . .	L Near	 0058	  _TEXT	
+run_test . . . . . . . . . . . .	L Near	 004B	  _TEXT	
 run  . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
-while_loop_test  . . . . . . . .	L Near	 0058	  _TEXT	
-while_loop . . . . . . . . . . .	L Near	 005E	  _TEXT	
+while_loop_test  . . . . . . . .	L Near	 005C	  _TEXT	
+while_loop . . . . . . . . . . .	L Near	 0060	  _TEXT	
 
 	   0 Warnings
 	   0 Errors
