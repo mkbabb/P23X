@@ -34,19 +34,20 @@ _process:
          ldr  r0, =InString       	
          ldr  r1, =OutString      	
 _loop:                            	
-		 ldrb r2, [r0], #1        	
-		 cmp r2, #0x00				
-		 beq _finloop				
-		 cmp r2, #' '				
-		 beq _store					
-		 cmp  r2, #'z'	 		
-		 bhi  _loop					
-		 cmp  r2, #0x60				
-		 subhi r2, r2, #0X20		
-_dontConvert:						
-		 cmp r2, #0x5A				
-		 bhi _loop					
-		 cmp r2, #0X40				
+        ldrb r2, [r0], #1        	
+        cmp r2, #0x00				
+        beq _finloop				
+
+        cmp r2, #' '
+        beq _store
+
+        and r2, r2, #0xdf               ; bit-twiddling caps trick.
+        sub r3, r2, #'A'                 ; in the range 'twixt [A, Z]?
+        cmp r3, #25                     ; does the cmp above the above.
+        bls _store 
+
+        b _loop                ; jmp if so.	 		
+				
 _store:								
         strb r2, [r1], #1        	
 		b _loop						
