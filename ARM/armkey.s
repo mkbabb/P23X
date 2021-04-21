@@ -37,9 +37,9 @@ _loop:
 		 ldrb r2, [r0], #1        	
 		 cmp r2, #0x00				
 		 beq _finloop				
-		 cmp r2, #0X20				
+		 cmp r2, #' '				
 		 beq _store					
-		 cmp  r2, #0x7A		 		
+		 cmp  r2, #'z'	 		
 		 bhi  _loop					
 		 cmp  r2, #0x60				
 		 subhi r2, r2, #0X20		
@@ -48,7 +48,7 @@ _dontConvert:
 		 bhi _loop					
 		 cmp r2, #0X40				
 _store:								
-        strhib r2, [r1], #1        	
+        strb r2, [r1], #1        	
 		b _loop						
 _finloop: 							
 		strb r2, [r1]				
