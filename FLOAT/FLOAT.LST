@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/26/21 14:30:13
+Microsoft (R) Macro Assembler Version 6.11		    04/26/21 14:46:52
 float.asm						     Page 1 - 1
 
 
@@ -112,109 +112,113 @@ float.asm						     Page 1 - 1
  0017				piloop:                                ;
  0017  9B D9 06 0000 R		        fld [a]                     ;push a
  001C  9B D9 06 0004 R		        fld [b]                     ;push b
- 0021  9B DE E9			        fsub                        ;calculate a - b
- 0024  9B D9 1E 002C R		        fstp [temp]                 ;store into temp
+ 0021  9B DE E9			        fsub                        ;calculate (a - b)
+ 0024  9B D9 1E 002C R		        fstp [temp]                 ;pop into temp
 
- 0029  9B D9 06 002C R		        fld [temp]
- 002E  9B D9 06 002C R		        fld [temp]
- 0033  9B DE C9			        fmul
+ 0029  9B D9 06 002C R		        fld [temp]                  ;push temp
+ 002E  9B D9 06 002C R		        fld [temp]                  ;push temp
+ 0033  9B DE C9			        fmul                        ;calculate (a - b)*(a - b)
 
- 0036  9B D9 06 0014 R		        fld [t]
- 003B  9B DE C9			        fmul
- 003E  9B D9 1E 002C R		        fstp [temp]
+ 0036  9B D9 06 0014 R		        fld [t]                     ;push t
+ 003B  9B DE C9			        fmul                        ;calculate t*(a - b)*(a - b)
+ 003E  9B D9 1E 002C R		        fstp [temp]                 ;pop into temp
 
- 0043  9B D9 06 0010 R		        fld [s]
- 0048  9B D9 06 002C R		        fld [temp]
- 004D  9B DE E9			        fsub
- 0050  9B D9 1E 0010 R		        fstp [s]
+ 0043  9B D9 06 0010 R		        fld [s]                     ;push s
+ 0048  9B D9 06 002C R		        fld [temp]                  ;push temp
+ 004D  9B DE E9			        fsub                        ;caluclate s - t*(a - b)*(a - b)
+ 0050  9B D9 1E 0010 R		        fstp [s]                    ;pop into s
 				;---------------------------------------
 				;    pi = 4 * a * a / s;     // calc new value of pi
 				;---------------------------------------
- 0055  9B D9 06 0020 R		        fld        [four]            ;push 4
- 005A  9B D9 06 0000 R		        fld        [a]               ;push a
- 005F  9B DE C9			        fmul                         ;calculate 4 * a
+ 0055  9B D9 06 0000 R		        fld [a]                     ;push a
+ 005A  9B D9 06 0000 R		        fld [a]                     ;push a
+ 005F  9B DE C9			        fmul                        ;calculate a*a
+ 0062  9B D9 1E 002C R		        fstp [temp]                 ;pop into temp
 
- 0062  9B D9 06 0000 R		        fld        [a]               ;push a
- 0067  9B DE C9			        fmul                         ;calculate 4 * a * a
+ 0067  9B D9 06 0020 R		        fld [four]                  ;push four
+ 006C  9B D9 06 002C R		        fld [temp]                  ;push temp
+ 0071  9B DE C9			        fmul                        ;calculate 4*a*a
+ 0074  9B D9 1E 002C R		        fstp [temp]                 ;pop into temp
 
- 006A  9B D9 06 0010 R		        fld        [s]               ;push s
- 006F  9B DE F9			        fdiv                         ;calculate 4 * a * a / s
- 0072  9B D9 1E 0024 R		        fstp       [pi]              ;pop into pi
+ 0079  9B D9 06 002C R		        fld [temp]                  ;push temp
+ 007E  9B D9 06 0010 R		        fld [s]                     ;push s
+ 0083  9B DE F9			        fdiv                        ;calculate 4*a*a/s
+ 0086  9B D9 1E 0024 R		        fstp [pi]                   ;pop into pi
 				;---------------------------------------
 				;    c = (a + b) / 2.0;      // calc an+1 = (an + bn)/2
 				;---------------------------------------
- 0077  9B D9 06 0000 R		        fld [a]
- 007C  9B D9 06 0004 R		        fld [b]
- 0081  9B DE C1			        fadd
+ 008B  9B D9 06 0000 R		        fld [a]
+ 0090  9B D9 06 0004 R		        fld [b]
+ 0095  9B DE C1			        fadd
 
- 0084  9B D9 06 001C R		        fld [two]
- 0089  9B DE F9			        fdiv
- 008C  9B D9 1E 0008 R		        fstp [cc]
+ 0098  9B D9 06 001C R		        fld [two]
+ 009D  9B DE F9			        fdiv
+ 00A0  9B D9 1E 0008 R		        fstp [cc]
 				;---------------------------------------
 				;    d = sqrt (a * b);       // calc bn+1 = sqrt(an * bn)
 				;---------------------------------------
- 0091  9B D9 06 0000 R		         fld       [a]                 ;push a
- 0096  9B D9 06 0004 R		         fld       [b]                 ;push b
- 009B  9B DE C9			         fmul                          ;calc a*b
- 009E  E8 0000 E		         call      sqroot              ;calc sqrt(a*b)
- 00A1  9B D9 1E 000C R		         fstp      [d]                 ;pop  d
+ 00A5  9B D9 06 0000 R		         fld       [a]                 ;push a
+ 00AA  9B D9 06 0004 R		         fld       [b]                 ;push b
+ 00AF  9B DE C9			         fmul                          ;calc a*b
+ 00B2  E8 0000 E		         call      sqroot              ;calc sqrt(a*b)
+ 00B5  9B D9 1E 000C R		         fstp      [d]                 ;pop  d
 				;---------------------------------------
 				;    a = c;        // set an+1
 				;---------------------------------------
- 00A6  9B D9 06 0008 R		         fld       [cc]                ;push c
- 00AB  9B D9 1E 0000 R		         fstp      [a]                 ;pop  a
+ 00BA  9B D9 06 0008 R		         fld       [cc]                ;push c
+ 00BF  9B D9 1E 0000 R		         fstp      [a]                 ;pop  a
 				;---------------------------------------
 				;    b = d;        // set bn+1
 				;---------------------------------------
- 00B0  9B D9 06 000C R		         fld       [d]                 ;push d
- 00B5  9B D9 1E 0004 R		         fstp      [b]                 ;pop  b
+ 00C4  9B D9 06 000C R		         fld       [d]                 ;push d
+ 00C9  9B D9 1E 0004 R		         fstp      [b]                 ;pop  b
 				;---------------------------------------
 				;    t = 2 * t;    // calc next value of 2**k
 				;---------------------------------------
- 00BA  9B D9 06 0014 R		         fld       [t]                 ;push t
- 00BF  9B D9 06 0014 R		         fld       [t]                 ;push t
- 00C4  9B DE C1			         fadd                          ;calc 2*t
- 00C7  9B D9 1E 0014 R		         fstp      [t]                 ;pop t
+ 00CE  9B D9 06 0014 R		         fld       [t]                 ;push t
+ 00D3  9B D9 06 0014 R		         fld       [t]                 ;push t
+ 00D8  9B DE C1			         fadd                          ;calc 2*t
+ 00DB  9B D9 1E 0014 R		         fstp      [t]                 ;pop t
 				;---------------------------------------
 				;    output(pi);   // print the current value of pi
 				;---------------------------------------
- 00CC  9B D9 06 0024 R		         fld       [pi]                ;push pi
- 00D1  E8 0000 E		         call      output              ;output pi
- 00D4  9B D9 1E 0024 R		         fstp      [pi]                ;pop  pi
+ 00E0  9B D9 06 0024 R		         fld       [pi]                ;push pi
+ 00E5  E8 0000 E		         call      output              ;output pi
+ 00E8  9B D9 1E 0024 R		         fstp      [pi]                ;pop  pi
 				;---------------------------------------
 				;    if (pi == old) break;    // exit the loop if pi is not changing
 				;---------------------------------------
- 00D9  9B D9 06 0024 R		         fld       [pi]                ;push pi
- 00DE  9B D9 06 0018 R		         fld       [old]               ;push old
- 00E3  9B DE D9			         fcompp                        ;calculate pi - old
- 00E6  9B DD 3E 002A R		         fstsw     [status]            ;store the floating point status
- 00EB  9B			         fwait                         ;wait until store is complete
- 00EC  A1 002A R		         mov       ax,[status]         ;ax = floating point status
- 00EF  9E			         sahf                          ;store ah into main cpu status
- 00F0  74 13			         je        piend               ;exit if pi == old
+ 00ED  9B D9 06 0024 R		         fld       [pi]                ;push pi
+ 00F2  9B D9 06 0018 R		         fld       [old]               ;push old
+ 00F7  9B DE D9			         fcompp                        ;calculate pi - old
+ 00FA  9B DD 3E 002A R		         fstsw     [status]            ;store the floating point status
+ 00FF  9B			         fwait                         ;wait until store is complete
+ 0100  A1 002A R		         mov       ax,[status]         ;ax = floating point status
+ 0103  9E			         sahf                          ;store ah into main cpu status
+ 0104  74 13			         je        piend               ;exit if pi == old
 				;---------------------------------------
 				;    if we loop 20 times we also terminate
 				;---------------------------------------
- 00F2  FF 0E 0030 R		         dec       [maxloop]
- 00F6  74 0D			         je        piend
+ 0106  FF 0E 0030 R		         dec       [maxloop]
+ 010A  74 0D			         je        piend
 				;---------------------------------------
 				;    old = pi;     // save the current value of pi
 				;---------------------------------------
- 00F8  9B D9 06 0024 R		         fld       [pi]                ;push pi
- 00FD  9B D9 1E 0018 R		         fstp      [old]               ;pop  old
- 0102  E9 FF12			         jmp       piloop              ;loop
+ 010C  9B D9 06 0024 R		         fld       [pi]                ;push pi
+ 0111  9B D9 1E 0018 R		         fstp      [old]               ;pop  old
+ 0116  E9 FEFE			         jmp       piloop              ;loop
 				;---------------------------------------
 				; Terminate the program
 				;---------------------------------------
- 0105				piend:                                 ;
- 0105  B8 4C00			         mov       ax,4c00h            ;set DOS termination code
- 0108  CD 21			         int       21h                 ;terminate
+ 0119				piend:                                 ;
+ 0119  B8 4C00			         mov       ax,4c00h            ;set DOS termination code
+ 011C  CD 21			         int       21h                 ;terminate
 				;---------------------------------------
 
 				         end       start
 
  
-Microsoft (R) Macro Assembler Version 6.11		    04/26/21 14:30:13
+Microsoft (R) Macro Assembler Version 6.11		    04/26/21 14:46:52
 float.asm						     Symbols 2 - 1
 
 
@@ -227,7 +231,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0032	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 010A	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 011E	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -252,7 +256,7 @@ lstat  . . . . . . . . . . . . .	Word	 0028	  _DATA
 maxloop  . . . . . . . . . . . .	Word	 0030	  _DATA	
 old  . . . . . . . . . . . . . .	DWord	 0018	  _DATA	
 output . . . . . . . . . . . . .	L Near	 0000	  External
-piend  . . . . . . . . . . . . .	L Near	 0105	  _TEXT	
+piend  . . . . . . . . . . . . .	L Near	 0119	  _TEXT	
 piloop . . . . . . . . . . . . .	L Near	 0017	  _TEXT	
 pi . . . . . . . . . . . . . . .	DWord	 0024	  _DATA	
 sqroot . . . . . . . . . . . . .	L Near	 0000	  External

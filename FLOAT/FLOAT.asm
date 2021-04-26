@@ -108,34 +108,38 @@ start:                                 ;
 piloop:                                ;
         fld [a]                     ;push a
         fld [b]                     ;push b
-        fsub                        ;calculate a - b
-        fstp [temp]                 ;store into temp
+        fsub                        ;calculate (a - b)
+        fstp [temp]                 ;pop into temp
 
-        fld [temp]
-        fld [temp]
-        fmul
+        fld [temp]                  ;push temp
+        fld [temp]                  ;push temp
+        fmul                        ;calculate (a - b)*(a - b)
 
-        fld [t]
-        fmul
-        fstp [temp]
+        fld [t]                     ;push t
+        fmul                        ;calculate t*(a - b)*(a - b)
+        fstp [temp]                 ;pop into temp
 
-        fld [s]
-        fld [temp]
-        fsub
-        fstp [s]
+        fld [s]                     ;push s
+        fld [temp]                  ;push temp
+        fsub                        ;caluclate s - t*(a - b)*(a - b)
+        fstp [s]                    ;pop into s
 ;---------------------------------------
 ;    pi = 4 * a * a / s;     // calc new value of pi
 ;---------------------------------------
-        fld        [four]            ;push 4
-        fld        [a]               ;push a
-        fmul                         ;calculate 4 * a
+        fld [a]                     ;push a
+        fld [a]                     ;push a
+        fmul                        ;calculate a*a
+        fstp [temp]                 ;pop into temp
 
-        fld        [a]               ;push a
-        fmul                         ;calculate 4 * a * a
+        fld [four]                  ;push four
+        fld [temp]                  ;push temp
+        fmul                        ;calculate 4*a*a
+        fstp [temp]                 ;pop into temp
 
-        fld        [s]               ;push s
-        fdiv                         ;calculate 4 * a * a / s
-        fstp       [pi]              ;pop into pi
+        fld [temp]                  ;push temp
+        fld [s]                     ;push s
+        fdiv                        ;calculate 4*a*a/s
+        fstp [pi]                   ;pop into pi
 ;---------------------------------------
 ;    c = (a + b) / 2.0;      // calc an+1 = (an + bn)/2
 ;---------------------------------------
