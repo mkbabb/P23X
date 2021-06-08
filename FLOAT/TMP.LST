@@ -1,0 +1,75 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 02:55:19
+tmp.asm							     Page 1 - 1
+
+
+				    .model    small               ;4 segments of 64KB
+				    .8086                         ;only  8086 instructions
+				    .stack    256                 ;stack size is 256 bytes
+				    extern    output:proc         ;output subroutine is in another file
+				
+ 0000				    .data   
+ 0000 41200000			k    real4     10.0
+ 0004 40A00000			l    real4     5.0
+ 0008 C0000000			m    real4     -2.0
+ 000C 00000000			res  real4     0.0
+				
+ 0000				    .code
+ 0000				start: 
+ 0000  9B D9 06 0004 R		    fld    [l]
+ 0005  9B D9 06 0000 R		    fld    [k]
+ 000A  9B D9 06 0000 R		    fld    [k]
+ 000F  9B D9 06 0004 R		    fld    [l]
+ 0014  9B D9 06 0008 R		    fld    [m]
+ 0019  9B DE C9			    fmul
+ 001C  9B DE F9			    fdiv
+ 001F  9B DE E9			    fsub
+ 0022  9B DE C1			    fadd
+ 0025  9B D9 1E 000C R		    fstp [res]
+				
+ 002A  9B D9 06 000C R		    fld [res]
+ 002F  E8 0000 E		    call      output     
+ 0032  9B D9 1E 000C R		    fstp [res]         
+ 0037				done:                               
+ 0037  B8 4C00			    mov       ax, 4c00h            ;set DOS termination code
+ 003A  CD 21			    int       21h                 ;terminate
+				
+				    end       start
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 02:55:19
+tmp.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 0010	  Word	  Public  'DATA'	
+STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
+_TEXT  . . . . . . . . . . . . .	16 Bit	 003C	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+done . . . . . . . . . . . . . .	L Near	 0037	  _TEXT	
+k  . . . . . . . . . . . . . . .	DWord	 0000	  _DATA	
+l  . . . . . . . . . . . . . . .	DWord	 0004	  _DATA	
+m  . . . . . . . . . . . . . . .	DWord	 0008	  _DATA	
+output . . . . . . . . . . . . .	L Near	 0000	  External
+res  . . . . . . . . . . . . . .	DWord	 000C	  _DATA	
+start  . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+
+	   0 Warnings
+	   0 Errors

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.11		    04/08/21 17:22:57
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 15:16:00
 tmp.asm							     Page 1 - 1
 
 
@@ -6,22 +6,83 @@ tmp.asm							     Page 1 - 1
 				         .8086                         ;only allow 8086 instructions
 				         .stack     256   
  0000				.data
- 0000 CC FD BA 01 02 03		p0 db 0CCh,0FDh,0BAh,001h,002h,003h,004h,005h,006h,007h,008h,009h,00Ah,00Bh,00Ch,00Dh
-       04 05 06 07 08 09
-       0A 0B 0C 0D
-				
+				    ; mercury         db      5, 10, -5
+				    ; venus           db      'a', 'b', 'c'
+				    ; earth           dw      1, 2, 3
+				    ; mars            db      '$'
+				    ; p0 db  008h, 000h, 002h, 000h, 000h, 000h, 004h, 000h, 0FFh, 0FFh, 006h, 000h, 000h, 002h, 000h, 001h
+ 0000 08 00 02 00 00 00		    p0 db  008h, 000h, 002h, 000h, 000h, 000h, 004h, 000h, 0FFh, 0FFh, 006h, 000h, 000h, 002h, 000h, 001h
+       04 00 FF FF 06 00
+       00 02 00 01
  0000				.code
 				
  0000				tmp:
- 0000  B8 5005			    mov ax, 5005h
- 0003  BB 0010			    mov bx, 0010h
- 0006  F7 F3			    div bx
+				    ; mov cx, @data
+				    ; mov ax, 0CF17h
+				    ; mov bx, 011F1h
+				    ; add ax, bx
+				    ; mov ax, 0b20h
 				
- 0008				done:
- 0008  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
- 000B  CD 21			    int       21h  
+				    ; mov al, 140
+				    ; mov bl, 107
+				
+				    ; mov al, 0E7h
+				    ;   cbw
+				    ;   mov cl, 10
+				    ;   idiv cl
+				
+				    ; add al, bl
+				
+				    ; mov ax, 200h
+				    ; mov bx, 400h
+				    ; mul bx
+				
+				    ; mov ax, 0000Ah
+				    ; mov bx, 00002h
+				    ; mov cx, 00003h
+				    ; mov dx, 0000Bh
+				
+				    ; mul bl
+				    ; div dl
+				
+				    ; mov ax, 200h
+				    ; mov bx, 400h
+				    ; mul bx
+				
+				    ; mov ax, 00014h
+				    ; mov bx, 00919h
+				    ; mov cx, 0A00Ah
+				    ; mov dx, 0F00Fh
+				
+				    ; imul cx
+				
+ 0000  B8 ---- R		    mov       ax,@data
+ 0003  8E D8			    mov       ds,ax
+				
+				    ; mov si, 0006h
+				    ; mov di, [si + 3]
+				
+ 0005  BB 0002			    mov bx, 0002h
+				
+ 0008  8B 1F			    mov BX, [BX]
+ 000A  8B 1F			    mov BX, [BX]
+ 000C  8B 1F			    mov BX, [BX]
+				
+				    ; mov bp, 0420h
+				    ; mov di, 0140h
+				
+				    ; mov AX, [BP + DI + 8]
+				
+				
+				    ; mov bx, [earth]
+				    ; mov al, bh
+				 
+				
+ 000E				done:
+ 000E  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
+ 0011  CD 21			    int       21h  
 				    end       tmp   
-Microsoft (R) Macro Assembler Version 6.11		    04/08/21 17:22:57
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 15:16:00
 tmp.asm							     Symbols 2 - 1
 
 
@@ -34,7 +95,7 @@ Segments and Groups:
 DGROUP . . . . . . . . . . . . .	GROUP
 _DATA  . . . . . . . . . . . . .	16 Bit	 0010	  Word	  Public  'DATA'	
 STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
-_TEXT  . . . . . . . . . . . . .	16 Bit	 000D	  Word	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0013	  Word	  Public  'CODE'	
 
 
 Symbols:
@@ -50,7 +111,7 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
 @fardata . . . . . . . . . . . .	Text   	 FAR_DATA
 @stack . . . . . . . . . . . . .	Text   	 DGROUP
-done . . . . . . . . . . . . . .	L Near	 0008	  _TEXT	
+done . . . . . . . . . . . . . .	L Near	 000E	  _TEXT	
 p0 . . . . . . . . . . . . . . .	Byte	 0000	  _DATA	
 tmp  . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
 

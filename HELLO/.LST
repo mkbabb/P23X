@@ -1,0 +1,72 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 02:43:41
+tmp.asm\						     Page 1 - 1
+
+
+				         .model     small              ;64k code and 64k data
+				         .8086                         ;only allow 8086 instructions
+				         .stack     256   
+ 0000				.data
+ 0000 05 0A FB			    mercury         db      5, 10, -5
+ 0003 61 62 63			    venus           db      'a', 'b', 'c'
+ 0006 0001 0002 0003		    earth           dw      1, 2, 3
+ 000C 24			    mars            db      '$'
+ 000D CC FD BA 01 02 03		    p0  db  0CCh, 0FDh, 0BAh, 001h, 002h, 003h, 004h, 005h, 006h, 007h, 008h, 009h, 00Ah, 00Bh, 00Ch, 00Dh
+       04 05 06 07 08 09
+       0A 0B 0C 0D
+				
+ 0000				.code
+				
+ 0000				tmp:
+				    ; mov cx, @data
+				    ; ; mov al, 153
+				    ; ; mov bl, 177
+				    ; ; add al, bl
+				    ; mov ax, 0b20h
+				
+				    ; mov bx, [earth]
+				    ; mov al, bh
+ 0000  A0 000D R		    mov al, p0
+				
+ 0003				done:
+ 0003  B8 4C00			    mov       ax,4c00h            ;set dos code to terminate program
+ 0006  CD 21			    int       21h  
+				    end       tmp   
+Microsoft (R) Macro Assembler Version 6.11		    05/11/21 02:43:41
+tmp.asm\						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+DGROUP . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	16 Bit	 001D	  Word	  Public  'DATA'	
+STACK  . . . . . . . . . . . . .	16 Bit	 0100	  Para	  Stack	  'STACK'	 
+_TEXT  . . . . . . . . . . . . .	16 Bit	 0008	  Word	  Public  'CODE'	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 0000h	 
+@DataSize  . . . . . . . . . . .	Number	 0000h	 
+@Interface . . . . . . . . . . .	Number	 0000h	 
+@Model . . . . . . . . . . . . .	Number	 0002h	 
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 DGROUP
+@fardata?  . . . . . . . . . . .	Text   	 FAR_BSS
+@fardata . . . . . . . . . . . .	Text   	 FAR_DATA
+@stack . . . . . . . . . . . . .	Text   	 DGROUP
+done . . . . . . . . . . . . . .	L Near	 0003	  _TEXT	
+earth  . . . . . . . . . . . . .	Word	 0006	  _DATA	
+mars . . . . . . . . . . . . . .	Byte	 000C	  _DATA	
+mercury  . . . . . . . . . . . .	Byte	 0000	  _DATA	
+p0 . . . . . . . . . . . . . . .	Byte	 000D	  _DATA	
+tmp  . . . . . . . . . . . . . .	L Near	 0000	  _TEXT	
+venus  . . . . . . . . . . . . .	Byte	 0003	  _DATA	
+
+	   0 Warnings
+	   0 Errors
